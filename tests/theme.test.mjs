@@ -24,7 +24,7 @@ function fixture(saved, {readFails=false, writeFails=false, getterFails=false}={
 for(const theme of themes)test('restores '+theme+' before selector initialization',()=>{
   const f=fixture(theme);assert.equal(f.attributes['data-theme'],theme);assert.equal(f.selector.disabled,true);
   assert.deepEqual(f.writes,[]);f.ready();assert.equal(f.selector.value,theme);assert.equal(f.selector.disabled,false);
-  f.change(theme);assert.deepEqual(f.writes,[['passwordforge.theme',theme]]);assert.deepEqual(f.reads,['passwordforge.theme']);
+  f.change(theme);assert.deepEqual(f.writes,[['keysmith.theme',theme]]);assert.deepEqual(f.reads,['keysmith.theme']);
 });
 test('missing and invalid preferences fall back without rewriting storage',()=>{
   for(const value of [null,undefined,'','DARK','dark ','<script>','__proto__','{"theme":"dark"}',42]){
@@ -44,11 +44,11 @@ test('failed writes retain active preference and accessible feedback',()=>{
 });
 test('successful saving clears earlier read-failure notice',()=>{
   const f=fixture(null,{readFails:true});f.ready();f.change('amethyst');
-  assert.equal(f.message.hidden,true);assert.deepEqual(f.writes,[['passwordforge.theme','amethyst']]);
+  assert.equal(f.message.hidden,true);assert.deepEqual(f.writes,[['keysmith.theme','amethyst']]);
 });
 test('untrusted selector value can persist only Automatic',()=>{
   const f=fixture(null);f.ready();f.change('password-value');
-  assert.equal(f.selector.value,'automatic');assert.deepEqual(f.writes,[['passwordforge.theme','automatic']]);
+  assert.equal(f.selector.value,'automatic');assert.deepEqual(f.writes,[['keysmith.theme','automatic']]);
 });
 test('early external script, labelled native control, and unchanged CSP',async()=>{
   const html=await readFile(new URL('../public/index.html',import.meta.url),'utf8');

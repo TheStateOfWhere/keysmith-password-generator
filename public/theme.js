@@ -1,7 +1,7 @@
 /* Theme preference only. No access to password settings, output or randomness. */
 (() => {
   'use strict';
-  const key = 'passwordforge.theme';
+  const key = 'keysmith.theme';
   const themes = ['automatic', 'light', 'dark', 'emerald', 'amethyst'];
   const valid = value => typeof value === 'string' && themes.includes(value);
   let selected = 'automatic';

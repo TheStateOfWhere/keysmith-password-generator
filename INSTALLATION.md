@@ -49,6 +49,8 @@ provider in `examples/traefik`, with a hostname supplied through its environment
 It reads certificates from a read-only bind mount, listens internally on 8443 and
 receives host TCP 443. Routing is `keysmith:8080` on this project's private bridge.
 No certificate resolver, labels for discovery or Docker socket is required.
+The dedicated network is a normal bridge: an internal-only Docker network cannot
+provide the published HTTPS listener used here. Backend 8080 remains unpublished.
 
 ## Caddy
 
@@ -93,6 +95,8 @@ For updates, review upstream changes, update your source checkout to the intende
 release, rebuild, and repeat the same `up` command and health/browser checks.
 Changes to pinned dependencies require review, not automatic substitution.
 New builds are separate images; prior vulnerability results do not qualify them.
+The theme preference now uses `keysmith.theme`; select your theme again after
+upgrading from older builds. Password generation is unchanged.
 No automatic updater, custom release framework or retained rollback image is
 required by these examples.
 

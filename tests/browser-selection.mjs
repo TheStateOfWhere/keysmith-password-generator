@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
-const { chromium } = require(process.env.PASSWORDFORGE_PLAYWRIGHT_MODULE || 'playwright');
+const { chromium } = require(process.env.KEYSMITH_PLAYWRIGHT_MODULE || 'playwright');
 const root = fileURLToPath(new URL('../', import.meta.url));
 const server = spawn(process.execPath, ['scripts/serve.mjs'], { cwd: root, stdio: ['ignore', 'pipe', 'pipe'] });
 let browser;
@@ -18,7 +18,7 @@ try {
     server.once('error', reject);
     server.once('exit', () => reject(new Error('Local preview server exited')));
   });
-  browser = await chromium.launch({ headless: true, ...(process.env.PASSWORDFORGE_BROWSER_PATH ? { executablePath: process.env.PASSWORDFORGE_BROWSER_PATH } : {}) });
+  browser = await chromium.launch({ headless: true, ...(process.env.KEYSMITH_BROWSER_PATH ? { executablePath: process.env.KEYSMITH_BROWSER_PATH } : {}) });
   const context = await browser.newContext({ viewport: { width: 1280, height: 1000 }, permissions: ['clipboard-read', 'clipboard-write'] });
   const page = await context.newPage();
   await page.addInitScript(() => {

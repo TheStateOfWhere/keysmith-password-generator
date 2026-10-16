@@ -6,7 +6,7 @@ import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {writeFile} from 'node:fs/promises';
 import {screenshotDirectory} from './browser-artifacts.mjs';
-const {chromium}=createRequire(import.meta.url)(process.env.PASSWORDFORGE_PLAYWRIGHT_MODULE||'playwright');
+const {chromium}=createRequire(import.meta.url)(process.env.KEYSMITH_PLAYWRIGHT_MODULE||'playwright');
 const artifact=await screenshotDirectory('themes');
 const root=fileURLToPath(new URL('../',import.meta.url));
 const server=spawn(process.execPath,['scripts/serve.mjs'],{cwd:root,stdio:['ignore','pipe','pipe']});
@@ -15,7 +15,7 @@ const themes=['automatic','light','dark','emerald','amethyst'];
 const results={cases:[],contrast:[],storage:[],screenshots:[]};
 async function setup(options={}){
   const context=await browser.newContext({viewport:{width:1280,height:1000},colorScheme:'light',reducedMotion:'reduce',
-    ...(options.saved!==undefined?{storageState:{cookies:[],origins:[{origin:'http://127.0.0.1:4173',localStorage:[{name:'passwordforge.theme',value:options.saved}]}]}}:{})});
+    ...(options.saved!==undefined?{storageState:{cookies:[],origins:[{origin:'http://127.0.0.1:4173',localStorage:[{name:'keysmith.theme',value:options.saved}]}]}}:{})});
   await context.route('**/favicon.ico',r=>r.fulfill({status:204}));
   await context.route('**/styles.css',async r=>{await new Promise(resolve=>setTimeout(resolve,150));await r.continue();});
   if(options.scriptFailure)await context.route('**/theme.js',r=>r.abort());
@@ -26,7 +26,7 @@ async function setup(options={}){
     const get=Storage.prototype.getItem,set=Storage.prototype.setItem;
     Storage.prototype.getItem=function(key){if(readFail)throw new DOMException('Denied','SecurityError');return get.call(this,key);};
     Storage.prototype.setItem=function(key,value){
-      if(this!==window.localStorage||key!=='passwordforge.theme'||!['automatic','light','dark','emerald','amethyst'].includes(value)){themeFixture.unsafe++;throw Error('Forbidden persistence');}
+      if(this!==window.localStorage||key!=='keysmith.theme'||!['automatic','light','dark','emerald','amethyst'].includes(value)){themeFixture.unsafe++;throw Error('Forbidden persistence');}
       if(writeFail)throw new DOMException('Denied','QuotaExceededError');
       themeFixture.writes.push([key,value]);return set.call(this,key,value);
     };
@@ -77,7 +77,7 @@ async function contrast(page,label){
 }
 try{
   await new Promise((resolve,reject)=>{server.stdout.once('data',resolve);server.once('error',reject);server.once('exit',()=>reject(Error('Local preview stopped')));});
-  browser=await chromium.launch({headless:true,...(process.env.PASSWORDFORGE_BROWSER_PATH?{executablePath:process.env.PASSWORDFORGE_BROWSER_PATH}:{})});results.browser=browser.version();
+  browser=await chromium.launch({headless:true,...(process.env.KEYSMITH_BROWSER_PATH?{executablePath:process.env.KEYSMITH_BROWSER_PATH}:{})});results.browser=browser.version();
   const f=await setup();const {page}=f;
   assert.equal(await page.locator('#theme').inputValue(),'automatic');
   for(const profile of ['readable','strong-random','custom-policy']){
@@ -142,7 +142,7 @@ try{
   // After the last reload, isolate requests from theme changes.
   f.requests.length=0;await closeSettings(page);await page.locator('#theme').selectOption('emerald');await page.waitForTimeout(100);assert.deepEqual(f.requests,[]);
   assert.equal(await page.evaluate(()=>themeFixture.unsafe),0);assert.equal(await page.evaluate(()=>sessionStorage.length),0);
-  assert.deepEqual(await page.evaluate(()=>Object.keys(localStorage)),['passwordforge.theme']);
+  assert.deepEqual(await page.evaluate(()=>Object.keys(localStorage)),['keysmith.theme']);
   assert.deepEqual(f.errors,[]);assert.deepEqual(f.logs,[]);
   await page.emulateMedia({forcedColors:'active'});await closeSettings(page);await page.locator('#theme').focus();
   assert.equal(await page.evaluate(()=>matchMedia('(forced-colors: active)').matches),true);

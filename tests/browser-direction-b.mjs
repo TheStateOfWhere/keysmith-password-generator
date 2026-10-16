@@ -6,14 +6,14 @@ import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {writeFile} from 'node:fs/promises';
 import {screenshotDirectory} from './browser-artifacts.mjs';
-const {chromium}=createRequire(import.meta.url)(process.env.PASSWORDFORGE_PLAYWRIGHT_MODULE||'playwright');
+const {chromium}=createRequire(import.meta.url)(process.env.KEYSMITH_PLAYWRIGHT_MODULE||'playwright');
 const artifact=await screenshotDirectory('combined');
 const server=spawn(process.execPath,['scripts/serve.mjs'],{cwd:fileURLToPath(new URL('../',import.meta.url)),stdio:['ignore','pipe','pipe']});
 let browser;
 const results={layouts:[],batches:[],mobile:[],screenshots:[],fixtureOnly:true};
 try{
  await new Promise((resolve,reject)=>{server.stdout.once('data',resolve);server.once('error',reject);server.once('exit',()=>reject(Error('Preview stopped')));});
- browser=await chromium.launch({headless:true,...(process.env.PASSWORDFORGE_BROWSER_PATH?{executablePath:process.env.PASSWORDFORGE_BROWSER_PATH}:{})});
+ browser=await chromium.launch({headless:true,...(process.env.KEYSMITH_BROWSER_PATH?{executablePath:process.env.KEYSMITH_BROWSER_PATH}:{})});
  const context=await browser.newContext({viewport:{width:1280,height:1000},colorScheme:'light',reducedMotion:'reduce',serviceWorkers:'block'});
  const unexpected=[],errors=[];
  const assets=new Set(['/','/app.js','/theme.js','/styles.css','/core.js','/dictionary.js','/profiles.js','/policy.js','/random-password.js','/profile-output.js']);
@@ -30,7 +30,7 @@ try{
   Object.defineProperty(globalThis,'crypto',{configurable:true,value:{getRandomValues(b){if(b instanceof Uint8Array){b.fill(0);b[b.length-1]=rank++%256;}else b[0]=[0,0,0,0,8,0,8,0,8][word++%9];return b;}}});
   Object.defineProperty(navigator.clipboard,'writeText',{configurable:true,value:async value=>{fixtureCopies.push(value);}});
   const set=Storage.prototype.setItem;
-  Storage.prototype.setItem=function(k,v){if(this!==localStorage||k!=='passwordforge.theme'||!['automatic','light','dark','emerald','amethyst'].includes(v)){fixturePersistence++;throw Error('Unexpected persistence');}return set.call(this,k,v);};
+  Storage.prototype.setItem=function(k,v){if(this!==localStorage||k!=='keysmith.theme'||!['automatic','light','dark','emerald','amethyst'].includes(v)){fixturePersistence++;throw Error('Unexpected persistence');}return set.call(this,k,v);};
  });
  const page=await context.newPage();page.on('pageerror',()=>errors.push('Page error'));
  const openSettings=()=>openDialog(page);

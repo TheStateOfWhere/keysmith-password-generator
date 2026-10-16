@@ -87,5 +87,6 @@ automated browser coverage uses Microsoft Edge on Windows.
 
 Application: [MIT](LICENSE). Dictionary data retains its separate licenses and
 [attribution](data/NOTICE.md). Application and third-party notices are included in
-the built `/licenses/` assets. Some technical package/metadata names retain
-`PasswordForge`; the application interface is KeySmith.
+the built `/licenses/` assets. Historical project names in `data/NOTICE.md` are
+retained verbatim to preserve pinned dictionary attribution and provenance; the
+current product name is KeySmith.

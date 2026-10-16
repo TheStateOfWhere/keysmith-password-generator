@@ -6,11 +6,11 @@ import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { screenshotDirectory } from './browser-artifacts.mjs';
 const screenshot=await screenshotDirectory('profiles');
-const {chromium}=createRequire(import.meta.url)(process.env.PASSWORDFORGE_PLAYWRIGHT_MODULE||'playwright');
+const {chromium}=createRequire(import.meta.url)(process.env.KEYSMITH_PLAYWRIGHT_MODULE||'playwright');
 const server=spawn(process.execPath,['scripts/serve.mjs'],{cwd:fileURLToPath(new URL('../',import.meta.url)),stdio:['ignore','pipe','pipe']});let browser;
 try{
  await new Promise((resolve,reject)=>{server.stdout.once('data',resolve);server.once('error',reject);server.once('exit',()=>reject(Error('Local preview stopped')));});
- browser=await chromium.launch({headless:true,...(process.env.PASSWORDFORGE_BROWSER_PATH?{executablePath:process.env.PASSWORDFORGE_BROWSER_PATH}:{})});
+ browser=await chromium.launch({headless:true,...(process.env.KEYSMITH_BROWSER_PATH?{executablePath:process.env.KEYSMITH_BROWSER_PATH}:{})});
  const context=await browser.newContext({viewport:{width:1280,height:1000},permissions:['clipboard-read','clipboard-write']});await context.route('**/favicon.ico', route=>route.fulfill({status:204}));const page=await context.newPage();
  const errors=[];page.on('pageerror',()=>errors.push('Page error'));const logs=[];page.on('console',msg=>logs.push({type:msg.type(),location:msg.location(),browserResourceFailure:msg.text().startsWith('Failed to load resource:')}));
  await page.addInitScript(()=>{
@@ -19,7 +19,7 @@ try{
    if(b instanceof Uint8Array){b.fill(0);b[b.length-1]=rank++%256;}else b[0]=[0,0,0,0,8,0,8,0,8][wordOffset++%9];return b;}}});
   Object.defineProperty(navigator.clipboard,'writeText',{configurable:true,value:async value=>{if(globalThis.fixtureFailCopy)throw Error('Public fixture clipboard failure');globalThis.fixtureWrites.push(value);}});
   for(const name of ['fetch','XMLHttpRequest','WebSocket'])Object.defineProperty(globalThis,name,{configurable:true,value:()=>{globalThis.fixtureLeaks++;throw Error('Unexpected network use');}});
-  Object.defineProperty(Storage.prototype,'setItem',{configurable:true,value:function(key,value){if(this===window.localStorage&&key==='passwordforge.theme'&&['automatic','light','dark','emerald','amethyst'].includes(value))return;globalThis.fixtureLeaks++;throw Error('Unexpected persistent write');}});
+  Object.defineProperty(Storage.prototype,'setItem',{configurable:true,value:function(key,value){if(this===window.localStorage&&key==='keysmith.theme'&&['automatic','light','dark','emerald','amethyst'].includes(value))return;globalThis.fixtureLeaks++;throw Error('Unexpected persistent write');}});
  });
  await page.goto('http://127.0.0.1:4173/',{waitUntil:'networkidle'});const startUrl=page.url(),requests=[];page.on('request',r=>requests.push(r.resourceType()));
  assert.equal(await page.locator('#profile').inputValue(),'readable');await closeSettings(page);await page.locator('#generate').click();assert.equal(await page.locator('.component-copy button').count(),4);

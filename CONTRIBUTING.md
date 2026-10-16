@@ -19,8 +19,9 @@ them or their hashes without reviewing the intended data change.
 
 `npm test` builds the application and runs the source regression tests. Optional
 `tests/browser-*.mjs` suites require Playwright and Microsoft Edge outside this
-package; supply their module/browser paths through the documented environment
-variables used by those scripts. Browser screenshots are test artifacts, never
+package. Set `KEYSMITH_PLAYWRIGHT_MODULE` to the installed Playwright module path
+and `KEYSMITH_BROWSER_PATH` to the Edge executable when those are not found by
+default. These variables are for optional browser tests, not the Docker runtime. Browser screenshots are test artifacts, never
 part of a source release. Use public fixtures, not real generated passwords.
 
 Do not commit credentials, TLS material, `.env`, logs, dependencies, generated

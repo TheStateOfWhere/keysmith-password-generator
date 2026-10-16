@@ -4,12 +4,12 @@ import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';import {spawn} from 'node:child_process';import {fileURLToPath} from 'node:url';
 import {writeFile} from 'node:fs/promises';import {screenshotDirectory} from './browser-artifacts.mjs';
 const screenshot=await screenshotDirectory('ui-corrections');
-const {chromium}=createRequire(import.meta.url)(process.env.PASSWORDFORGE_PLAYWRIGHT_MODULE||'playwright');
+const {chromium}=createRequire(import.meta.url)(process.env.KEYSMITH_PLAYWRIGHT_MODULE||'playwright');
 const server=spawn(process.execPath,['scripts/serve.mjs'],{cwd:fileURLToPath(new URL('../',import.meta.url)),stdio:['ignore','pipe','pipe']});let browser;
 const results={boundaries:[],layouts:[],programmatic:[],errorLayouts:[],screenshots:[]};
 try{
  await new Promise((resolve,reject)=>{server.stdout.once('data',resolve);server.once('error',reject);server.once('exit',()=>reject(Error('Local preview stopped')));});
- browser=await chromium.launch({headless:true,...(process.env.PASSWORDFORGE_BROWSER_PATH?{executablePath:process.env.PASSWORDFORGE_BROWSER_PATH}:{})});results.browser=browser.version();
+ browser=await chromium.launch({headless:true,...(process.env.KEYSMITH_BROWSER_PATH?{executablePath:process.env.KEYSMITH_BROWSER_PATH}:{})});results.browser=browser.version();
  const context=await browser.newContext({viewport:{width:1280,height:900},permissions:['clipboard-read','clipboard-write']});await context.route('**/favicon.ico',r=>r.fulfill({status:204}));
  const page=await context.newPage(),errors=[],logs=[],requests=[];page.on('pageerror',()=>errors.push('Page error'));page.on('console',msg=>logs.push({type:msg.type(),location:msg.location(),expectedNumericFixtureWarning:msg.type()==='warning'&&msg.text()==='The specified value "20x" cannot be parsed, or is out of range.' }));
  await page.addInitScript(()=>{
@@ -19,7 +19,7 @@ try{
   Object.defineProperty(navigator.clipboard,'writeText',{configurable:true,value:async value=>{fixtureWrites.push(value);}});
   const scroll=HTMLElement.prototype.scrollIntoView;HTMLElement.prototype.scrollIntoView=function(options){fixtureScrolls.push(options);return scroll.call(this,options);};
   for(const name of ['fetch','XMLHttpRequest','WebSocket'])Object.defineProperty(globalThis,name,{configurable:true,value:()=>{fixtureLeaks++;throw Error('Unexpected network API');}});
-  Object.defineProperty(Storage.prototype,'setItem',{configurable:true,value:function(key,value){if(this===window.localStorage&&key==='passwordforge.theme'&&['automatic','light','dark','emerald','amethyst'].includes(value))return;fixtureLeaks++;throw Error('Unexpected storage write');}});
+  Object.defineProperty(Storage.prototype,'setItem',{configurable:true,value:function(key,value){if(this===window.localStorage&&key==='keysmith.theme'&&['automatic','light','dark','emerald','amethyst'].includes(value))return;fixtureLeaks++;throw Error('Unexpected storage write');}});
  });
  await page.goto('http://127.0.0.1:4173/',{waitUntil:'networkidle'});const originalUrl=page.url();page.on('request',r=>requests.push(r.resourceType()));
  const generate=page.locator('#generate');
