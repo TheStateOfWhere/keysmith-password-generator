@@ -1,0 +1,13 @@
+{
+    admin off
+    persist_config off
+    auto_https disable_redirects
+    https_port 8443
+}
+
+{$KEYSMITH_DOMAIN} {
+    tls /certs/fullchain.pem /certs/privkey.pem
+    reverse_proxy keysmith:8080 {
+        health_uri /healthz
+    }
+}

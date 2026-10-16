@@ -1,0 +1,25 @@
+http:
+  routers:
+    keysmith:
+      rule: 'Host(`{{ env "KEYSMITH_DOMAIN" }}`)'
+      entryPoints: [websecure]
+      service: keysmith
+      tls:
+        options: standard
+  services:
+    keysmith:
+      loadBalancer:
+        servers:
+          - url: "http://keysmith:8080"
+        healthCheck:
+          path: /healthz
+          interval: 30s
+          timeout: 3s
+tls:
+  certificates:
+    - certFile: /certs/fullchain.pem
+      keyFile: /certs/privkey.pem
+  options:
+    standard:
+      minVersion: VersionTLS12
+      sniStrict: true

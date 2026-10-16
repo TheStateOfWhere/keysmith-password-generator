@@ -1,0 +1,12 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+entryPoints:
+  websecure:
+    address: ":8443"
+providers:
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+log:
+  level: ERROR

@@ -57,8 +57,8 @@ test('early external script, labelled native control, and unchanged CSP',async()
   assert.doesNotMatch(html,/unsafe-inline|<script[^>]*>\s*[^<\s]/);
   assert.match(html,/connect-src 'none'/);assert.doesNotMatch(source,/innerHTML|JSON\.stringify|crypto|Math\.random|fetch\(|sendBeacon|console\.|sessionStorage|indexedDB/);
 });
-test('built theme is exact source and available to runtime asset gate',async()=>{
+test('built theme is exact source and referenced by the served entry point',async()=>{
   assert.equal(await readFile(new URL('../dist/theme.js',import.meta.url),'utf8'),source);
-  const gate=await readFile(new URL('../scripts/release/runtime-check.sh',import.meta.url),'utf8');
-  assert.match(gate,/\/theme\.js/);assert.match(gate,/for module in theme app/);
+  const html=await readFile(new URL('../dist/index.html',import.meta.url),'utf8');
+  assert.match(html,/<script src="\.\/theme\.js"><\/script>/);
 });

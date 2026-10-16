@@ -9,7 +9,8 @@ COPY scripts ./scripts
 COPY tests ./tests
 COPY data ./data
 # Configuration regression tests run inside the build stage as well as locally.
-COPY compose.yaml compose.dev.yaml .gitignore Dockerfile ./
+COPY compose.yaml compose.traefik.yaml compose.caddy.yaml .gitignore .dockerignore Dockerfile LICENSE ./
+COPY examples ./examples
 RUN npm test
 
 FROM nginx:1.30.5-alpine@sha256:0985e772fb9f729e6fa0980da05fca5d9c468e870eed43071545afa9d2e27d94

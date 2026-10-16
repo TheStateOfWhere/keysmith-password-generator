@@ -1,0 +1,72 @@
+# Complete alternative: use alone, never as an overlay.
+name: keysmith-caddy
+services:
+  keysmith:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: keysmith:1.0.0-local
+    pull_policy: never
+    restart: unless-stopped
+    user: "10001:10001"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m,mode=1777
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    cpus: 1.0
+    pids_limit: 128
+    networks: [app]
+    labels:
+      traefik.enable: "false"
+      com.centurylinklabs.watchtower.enable: "false"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+  caddy:
+    image: caddy:2@sha256:685ae3d7c34d9b5f8caeddc5d14051db7bbd88ff1f5a2fa0c16bd8ca328fb7af
+    platform: linux/amd64
+    pull_policy: never
+    restart: unless-stopped
+    user: "65532:65532"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 256m
+    cpus: 0.5
+    pids_limit: 128
+    environment:
+      KEYSMITH_DOMAIN: "${KEYSMITH_DOMAIN:?Set KEYSMITH_DOMAIN in .env}"
+    ports:
+      - "${KEYSMITH_BIND_IP:?Set KEYSMITH_BIND_IP in .env}:443:8443/tcp"
+    networks: [app]
+    depends_on:
+      keysmith:
+        condition: service_healthy
+    labels:
+      traefik.enable: "false"
+      com.centurylinklabs.watchtower.enable: "false"
+    tmpfs:
+      - /data:rw,noexec,nosuid,size=16m,mode=0700,uid=65532,gid=65532
+      - /config:rw,noexec,nosuid,size=16m,mode=0700,uid=65532,gid=65532
+    volumes:
+      - type: bind
+        source: ./examples/caddy/Caddyfile
+        target: /etc/caddy/Caddyfile
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: "${KEYSMITH_TLS_DIR:?Set an absolute external TLS directory}"
+        target: /certs
+        read_only: true
+        bind:
+          create_host_path: false
+networks:
+  app:
+    internal: true

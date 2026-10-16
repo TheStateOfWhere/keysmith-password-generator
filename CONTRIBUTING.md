@@ -1,22 +1,28 @@
-# Development checklist
+# Contributing
 
-Keep changes small and reviewed. Do not include deployment credentials, host
-identities, real passwords or private evidence. The application is MIT-licensed
-(LICENSE); dictionary/data licenses, attribution and modification notices must be
-retained separately and are not relicensed.
+Use Node.js 22 or newer and npm for local development:
 
-Run npm ci, npm test, npx --no-install tsc --noEmit, normal/optimized release-tool
-unittests, Bash syntax checks and the relevant external Edge suites. Do not log
-password values on failures. Use controlled public fixtures for screenshots.
+```sh
+npm ci
+npm test
+npx --no-install tsc --noEmit
+npm run dev
+```
 
-Preserve exact entropy/counting/sampling, global exclusions and Readable behavior.
-Dictionary changes require provenance and independent entropy review. No frameworks,
-backend storage or telemetry are planned. There is no automatic release workflow.
+The development server binds to localhost:4173. Run `npm run build` again after
+source changes; the small development server does not rebuild automatically.
 
-Source uses LF; data/ is byte-preserved. Do not normalize pinned data or alter
-checksums without approval. Add new repository files to RELEASE-INVENTORY.json;
-packaging requires a clean committed tree with exact inventory. Artifacts stay
-outside source packages. A future release must revalidate Docker and browser gates.
+Keep changes focused. Preserve exact entropy calculations, unbiased sampling,
+dictionary provenance, character exclusions, browser privacy and accessibility
+behavior. Dictionary inputs and reports under `data/` are pinned; do not change
+them or their hashes without reviewing the intended data change.
 
-Use main with short-lived descriptive branches. Annotated vX.Y.Z tags follow a
-qualified release; creating or pushing tags is a separate publication action.
+`npm test` builds the application and runs the source regression tests. Optional
+`tests/browser-*.mjs` suites require Playwright and Microsoft Edge outside this
+package; supply their module/browser paths through the documented environment
+variables used by those scripts. Browser screenshots are test artifacts, never
+part of a source release. Use public fixtures, not real generated passwords.
+
+Do not commit credentials, TLS material, `.env`, logs, dependencies, generated
+`dist/`, or test artifacts. See SECURITY.md for confidential reporting and LICENSE
+plus data/NOTICE.md for application and dictionary licensing.
