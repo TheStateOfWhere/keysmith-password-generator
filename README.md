@@ -78,6 +78,27 @@ If a port is occupied, choose another port or host address; do not stop another
 application. A missing local image requires the explicit build step above.
 See [INSTALLATION.md](INSTALLATION.md) for updates and removal.
 
+## Screenshots
+
+Captured from the real KeySmith application. Any visible passwords are public
+examples and must not be used as credentials.
+
+### Desktop — light theme
+
+![KeySmith desktop in the light theme](docs/screenshots/desktop-light.png)
+
+### Desktop — dark theme
+
+![KeySmith desktop in the dark theme](docs/screenshots/desktop-dark.png)
+
+### Mobile responsive layout
+
+![KeySmith responsive mobile layout](docs/screenshots/mobile.png)
+
+### Five-password batch
+
+![KeySmith displaying five generated example passwords](docs/screenshots/batch-five.png)
+
 ## Development and licensing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for local tests and [SECURITY.md](SECURITY.md)
