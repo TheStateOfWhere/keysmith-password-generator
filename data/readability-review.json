@@ -1,0 +1,573 @@
+{
+  "method": "Independent per-character BigInt DP; ordered distinct dictionary selection; fixed capitalization/separators contribute zero bits.",
+  "eligibleWords": 17195,
+  "ranges": [
+    {
+      "minWordLength": 4,
+      "maxWordLength": 4,
+      "previousWords": 1466,
+      "eligibleWords": 1458,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "29240182804525056",
+      "entropyBits": 54.698801848994215,
+      "entropyChangeBits": -0.023699369137318627
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 5,
+      "previousWords": 3894,
+      "eligibleWords": 3885,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "553910078918085120",
+      "entropyBits": 58.94242940302681,
+      "entropyChangeBits": -0.010017432225950529
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 6,
+      "previousWords": 7194,
+      "eligibleWords": 7184,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "3503637964375363584",
+      "entropyBits": 61.6035594149936,
+      "entropyChangeBits": -0.006021265827186539
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 7,
+      "previousWords": 10493,
+      "eligibleWords": 10484,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "10890764978988432384",
+      "entropyBits": 63.23973909691764,
+      "entropyChangeBits": -0.003714209175747385
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 8,
+      "previousWords": 13279,
+      "eligibleWords": 13274,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true,
+      "sixCharacterCombinations": "22105936258276276224",
+      "entropyBits": 64.26106764127165,
+      "entropyChangeBits": -0.0016301025159890514
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 9,
+      "previousWords": 15155,
+      "eligibleWords": 15155,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true,
+      "sixCharacterCombinations": "32899059256777378560",
+      "entropyBits": 64.8346801337813,
+      "entropyChangeBits": 0
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 10,
+      "previousWords": 16309,
+      "eligibleWords": 16309,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true,
+      "sixCharacterCombinations": "41001877087634179584",
+      "entropyBits": 65.15232376144505,
+      "entropyChangeBits": 0
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 11,
+      "previousWords": 16915,
+      "eligibleWords": 16915,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true,
+      "sixCharacterCombinations": "45744681690184538880",
+      "entropyBits": 65.31023782723588,
+      "entropyChangeBits": 0
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 12,
+      "previousWords": 17195,
+      "eligibleWords": 17195,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true,
+      "sixCharacterCombinations": "48054315834761322240",
+      "entropyBits": 65.38129981042074,
+      "entropyChangeBits": 0
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 5,
+      "previousWords": 2428,
+      "eligibleWords": 2427,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "134981406295545600",
+      "entropyBits": 56.90553830263757,
+      "entropyChangeBits": -0.0017836742938257544
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 6,
+      "previousWords": 5728,
+      "eligibleWords": 5726,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "1773895747023590400",
+      "entropyBits": 60.62162693200175,
+      "entropyChangeBits": -0.0015117307910159639
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 7,
+      "previousWords": 9027,
+      "eligibleWords": 9026,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "6949335180714393600",
+      "entropyBits": 62.591580674677246,
+      "entropyChangeBits": -0.0004795396557000231
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 8,
+      "previousWords": 11813,
+      "eligibleWords": 11816,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "15592035233568245760",
+      "entropyBits": 63.757443058652775,
+      "entropyChangeBits": 0.001099103187016226
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 9,
+      "previousWords": 13689,
+      "eligibleWords": 13697,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true,
+      "sixCharacterCombinations": "24287503286928752640",
+      "entropyBits": 64.39684799391644,
+      "entropyChangeBits": 0.0025288257441928863
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 10,
+      "previousWords": 14843,
+      "eligibleWords": 14851,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true,
+      "sixCharacterCombinations": "30958577100588614400",
+      "entropyBits": 64.74697296758838,
+      "entropyChangeBits": 0.002332256629671292
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 11,
+      "previousWords": 15449,
+      "eligibleWords": 15457,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true,
+      "sixCharacterCombinations": "34905427238860738560",
+      "entropyBits": 64.92008517287218,
+      "entropyChangeBits": 0.0022407896616272183
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 12,
+      "previousWords": 15729,
+      "eligibleWords": 15737,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true,
+      "sixCharacterCombinations": "36837035420486353920",
+      "entropyBits": 64.99779076341345,
+      "entropyChangeBits": 0.0022009078197697818
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 6,
+      "previousWords": 3300,
+      "eligibleWords": 3299,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "339120111767802624",
+      "entropyBits": 58.23457396007685,
+      "entropyChangeBits": -0.0013121374627900195
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 7,
+      "previousWords": 6599,
+      "eligibleWords": 6599,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "2715429653511047424",
+      "entropyBits": 61.23588619695906,
+      "entropyChangeBits": 0
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 8,
+      "previousWords": 9385,
+      "eligibleWords": 9389,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "7822055094117272064",
+      "entropyBits": 62.76225340560434,
+      "entropyChangeBits": 0.0018444854979406955
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 9,
+      "previousWords": 11261,
+      "eligibleWords": 11270,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "13528752943577840640",
+      "entropyBits": 63.55266266323617,
+      "entropyChangeBits": 0.0034580113081617014
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 10,
+      "previousWords": 12415,
+      "eligibleWords": 12424,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "18125128137766938624",
+      "entropyBits": 63.97462499732911,
+      "entropyChangeBits": 0.0031366725431638542
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 11,
+      "previousWords": 13021,
+      "eligibleWords": 13030,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true,
+      "sixCharacterCombinations": "20909077983457090560",
+      "entropyBits": 64.18076324843052,
+      "entropyChangeBits": 0.0029907303779168615
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 12,
+      "previousWords": 13301,
+      "eligibleWords": 13310,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true,
+      "sixCharacterCombinations": "22286296566531486720",
+      "entropyBits": 64.27279069899967,
+      "entropyChangeBits": 0.002927788923756225
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 7,
+      "previousWords": 3299,
+      "eligibleWords": 3300,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "339428683298073600",
+      "entropyBits": 58.23588609753964,
+      "entropyChangeBits": 0.0013121374627900195
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 8,
+      "previousWords": 6085,
+      "eligibleWords": 6090,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "2134221758019348480",
+      "entropyBits": 60.888415796305885,
+      "entropyChangeBits": 0.003555479704225206
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 9,
+      "previousWords": 7961,
+      "eligibleWords": 7971,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "4786042932277850880",
+      "entropyBits": 62.05353904632544,
+      "entropyChangeBits": 0.005433880397575308
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 10,
+      "previousWords": 9115,
+      "eligibleWords": 9125,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "7180545811061952000",
+      "entropyBits": 62.63879921901026,
+      "entropyChangeBits": 0.004746228304739475
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 11,
+      "previousWords": 9721,
+      "eligibleWords": 9731,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "8708435688069169920",
+      "entropyBits": 62.91711929617075,
+      "entropyChangeBits": 0.0044504735573625
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 12,
+      "previousWords": 10001,
+      "eligibleWords": 10011,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "9482085363910199040",
+      "entropyBits": 63.039910089176,
+      "entropyChangeBits": 0.004325922550535211
+    },
+    {
+      "minWordLength": 8,
+      "maxWordLength": 8,
+      "previousWords": 2786,
+      "eligibleWords": 2790,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "205091244150266880",
+      "entropyBits": 57.50904351401735,
+      "entropyChangeBits": 0.006211820935909884
+    },
+    {
+      "minWordLength": 8,
+      "maxWordLength": 9,
+      "previousWords": 4662,
+      "eligibleWords": 4671,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "962835854794087680",
+      "entropyBits": 59.74006748004347,
+      "entropyChangeBits": 0.00834911142995054
+    },
+    {
+      "minWordLength": 8,
+      "maxWordLength": 10,
+      "previousWords": 5816,
+      "eligibleWords": 5825,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "1867521966312038400",
+      "entropyBits": 60.69583092046659,
+      "entropyChangeBits": 0.006693491646110772
+    },
+    {
+      "minWordLength": 8,
+      "maxWordLength": 11,
+      "previousWords": 6422,
+      "eligibleWords": 6431,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "2513243343487806720",
+      "entropyBits": 61.124256074155845,
+      "entropyChangeBits": 0.006062216652608754
+    },
+    {
+      "minWordLength": 8,
+      "maxWordLength": 12,
+      "previousWords": 6702,
+      "eligibleWords": 6711,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "2856072210399555840",
+      "entropyBits": 61.30873816362398,
+      "entropyChangeBits": 0.005809078000027057
+    },
+    {
+      "minWordLength": 9,
+      "maxWordLength": 9,
+      "previousWords": 1876,
+      "eligibleWords": 1881,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "62816691334763520",
+      "entropyBits": 55.801997473912316,
+      "entropyChangeBits": 0.011526201063077224
+    },
+    {
+      "minWordLength": 9,
+      "maxWordLength": 10,
+      "previousWords": 3030,
+      "eligibleWords": 3035,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "264026984066737920",
+      "entropyBits": 57.87346299641832,
+      "entropyChangeBits": 0.007138522872836006
+    },
+    {
+      "minWordLength": 9,
+      "maxWordLength": 11,
+      "previousWords": 3636,
+      "eligibleWords": 3641,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "455937959087170560",
+      "entropyBits": 58.661615138776305,
+      "entropyChangeBits": 0.005949259137061347
+    },
+    {
+      "minWordLength": 9,
+      "maxWordLength": 12,
+      "previousWords": 3916,
+      "eligibleWords": 3921,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "569455517861959680",
+      "entropyBits": 58.982360765525435,
+      "entropyChangeBits": 0.005524040712465705
+    },
+    {
+      "minWordLength": 10,
+      "maxWordLength": 10,
+      "previousWords": 1154,
+      "eligibleWords": 1154,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "14490695413039104",
+      "entropyBits": 53.68597635014363,
+      "entropyChangeBits": 0
+    },
+    {
+      "minWordLength": 10,
+      "maxWordLength": 11,
+      "previousWords": 1760,
+      "eligibleWords": 1760,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "51451614934917120",
+      "entropyBits": 55.514065878544095,
+      "entropyChangeBits": 0
+    },
+    {
+      "minWordLength": 10,
+      "maxWordLength": 12,
+      "previousWords": 2040,
+      "eligibleWords": 2040,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "80140713665402880",
+      "entropyBits": 56.15338487544533,
+      "entropyChangeBits": 0
+    },
+    {
+      "minWordLength": 11,
+      "maxWordLength": 11,
+      "previousWords": 606,
+      "eligibleWords": 606,
+      "minimumSuffixLength": 10,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "2093469172945920",
+      "entropyBits": 50.894817097364054,
+      "entropyChangeBits": 0
+    },
+    {
+      "minWordLength": 11,
+      "maxWordLength": 12,
+      "previousWords": 886,
+      "eligibleWords": 886,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "6552860012375040",
+      "entropyBits": 52.541046135320876,
+      "entropyChangeBits": 0
+    },
+    {
+      "minWordLength": 12,
+      "maxWordLength": 12,
+      "previousWords": 280,
+      "eligibleWords": 280,
+      "minimumSuffixLength": 11,
+      "sixCharacterSuffixAllowed": false,
+      "sixCharacterCombinations": "205309319362560",
+      "entropyBits": 47.54479244390173,
+      "entropyChangeBits": 0
+    }
+  ],
+  "capitalizationReview": [
+    {
+      "remove": "abbr",
+      "add": "bargraph",
+      "reason": "Abbreviation; replace with a recognizable compound.",
+      "titlecase": "Bargraph",
+      "uppercase": "BARGRAPH"
+    },
+    {
+      "remove": "acct",
+      "add": "bunkbed",
+      "reason": "Abbreviation; replace with a recognizable compound.",
+      "titlecase": "Bunkbed",
+      "uppercase": "BUNKBED"
+    },
+    {
+      "remove": "advt",
+      "add": "handsfree",
+      "reason": "Abbreviation; replace with a recognizable compound.",
+      "titlecase": "Handsfree",
+      "uppercase": "HANDSFREE"
+    },
+    {
+      "remove": "agcy",
+      "add": "handwash",
+      "reason": "Abbreviation; replace with a recognizable compound.",
+      "titlecase": "Handwash",
+      "uppercase": "HANDWASH"
+    },
+    {
+      "remove": "brrr",
+      "add": "subheader",
+      "reason": "Repeated-letter interjection can be hard to count.",
+      "titlecase": "Subheader",
+      "uppercase": "SUBHEADER"
+    },
+    {
+      "remove": "shhh",
+      "add": "uncrushed",
+      "reason": "Repeated-letter interjection can be hard to count.",
+      "titlecase": "Uncrushed",
+      "uppercase": "UNCRUSHED"
+    },
+    {
+      "remove": "xxxv",
+      "add": "undrafted",
+      "reason": "Roman-numeral form is awkward after capitalization.",
+      "titlecase": "Undrafted",
+      "uppercase": "UNDRAFTED"
+    },
+    {
+      "remove": "crwth",
+      "add": "unpadded",
+      "reason": "Uncommon consonant-heavy spelling.",
+      "titlecase": "Unpadded",
+      "uppercase": "UNPADDED"
+    },
+    {
+      "remove": "crwths",
+      "add": "untracked",
+      "reason": "Uncommon consonant-heavy spelling.",
+      "titlecase": "Untracked",
+      "uppercase": "UNTRACKED"
+    },
+    {
+      "remove": "cwms",
+      "add": "unturned",
+      "reason": "Uncommon consonant-heavy spelling.",
+      "titlecase": "Unturned",
+      "uppercase": "UNTURNED"
+    }
+  ]
+}

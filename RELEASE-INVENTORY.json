@@ -1,0 +1,448 @@
+{
+  "version": "1.0.0",
+  "scope": "Sanitized publication source; private provenance/evidence excluded",
+  "sourceCommit": "Recorded in packaged SOURCE-MANIFEST.json after commit",
+  "fileCount": 110,
+  "files": [
+    {
+      "path": ".dockerignore",
+      "mode": "0644"
+    },
+    {
+      "path": ".gitattributes",
+      "mode": "0644"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "0644"
+    },
+    {
+      "path": "BASE-IMAGES.json",
+      "mode": "0644"
+    },
+    {
+      "path": "CONTAINER-VALIDATION.md",
+      "mode": "0644"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "mode": "0644"
+    },
+    {
+      "path": "DEPLOYMENT.md",
+      "mode": "0644"
+    },
+    {
+      "path": "Dockerfile",
+      "mode": "0644"
+    },
+    {
+      "path": "FRESH-INSTALL-ACCEPTANCE.md",
+      "mode": "0644"
+    },
+    {
+      "path": "INSTALLATION.md",
+      "mode": "0644"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "0644"
+    },
+    {
+      "path": "README.md",
+      "mode": "0644"
+    },
+    {
+      "path": "RELEASE-INVENTORY.json",
+      "mode": "0644"
+    },
+    {
+      "path": "RELEASE-NOTES.md",
+      "mode": "0644"
+    },
+    {
+      "path": "SECURITY.md",
+      "mode": "0644"
+    },
+    {
+      "path": "compose.dev.yaml",
+      "mode": "0644"
+    },
+    {
+      "path": "compose.standalone.example.yaml",
+      "mode": "0644"
+    },
+    {
+      "path": "compose.traefik.example.yaml",
+      "mode": "0644"
+    },
+    {
+      "path": "compose.yaml",
+      "mode": "0644"
+    },
+    {
+      "path": "data/CC-BY-4.0.txt",
+      "mode": "0644"
+    },
+    {
+      "path": "data/ESDB-Copyright.txt",
+      "mode": "0644"
+    },
+    {
+      "path": "data/NOTICE.md",
+      "mode": "0644"
+    },
+    {
+      "path": "data/dictionary-report.json",
+      "mode": "0644"
+    },
+    {
+      "path": "data/eff_large_wordlist.txt",
+      "mode": "0644"
+    },
+    {
+      "path": "data/eligible-words.txt",
+      "mode": "0644"
+    },
+    {
+      "path": "data/entropy-report.json",
+      "mode": "0644"
+    },
+    {
+      "path": "data/esdb-annotations.txt",
+      "mode": "0644"
+    },
+    {
+      "path": "data/esdb-en_US-large.txt",
+      "mode": "0644"
+    },
+    {
+      "path": "data/esdb-provenance.json",
+      "mode": "0644"
+    },
+    {
+      "path": "data/esdb-sensitive-words.txt",
+      "mode": "0644"
+    },
+    {
+      "path": "data/exclusions.txt",
+      "mode": "0644"
+    },
+    {
+      "path": "data/readability-overrides.json",
+      "mode": "0644"
+    },
+    {
+      "path": "data/readability-review.json",
+      "mode": "0644"
+    },
+    {
+      "path": "nginx.conf",
+      "mode": "0644"
+    },
+    {
+      "path": "package-lock.json",
+      "mode": "0644"
+    },
+    {
+      "path": "package.json",
+      "mode": "0644"
+    },
+    {
+      "path": "public/index.html",
+      "mode": "0644"
+    },
+    {
+      "path": "public/styles.css",
+      "mode": "0644"
+    },
+    {
+      "path": "public/theme.js",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/build.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/dictionary.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/OPERATOR-RUNBOOK.md",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/SCANNER-PROVENANCE.json",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/TARGET.example.json",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/build_identity.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/build_proof.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/builder_contract.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/checks.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/compose-release.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/docker-release.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/evidence_schema.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/host-preflight.sh",
+      "mode": "0755"
+    },
+    {
+      "path": "scripts/release/package-source.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/private_metadata.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/runtime-check.sh",
+      "mode": "0755"
+    },
+    {
+      "path": "scripts/release/runtime.sh",
+      "mode": "0755"
+    },
+    {
+      "path": "scripts/release/runtime_inputs.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/scan-contract.tpl",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/scan_contract.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/security.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/source_approval.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/identity_fixture.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_approval_binding.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_build_metadata.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_builder_compatibility.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_compose_release.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_docker_release.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_fail_closed.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_host_preflight.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_package_source.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_publication.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_runtime_assets.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_runtime_checkpoint.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_security_fixes.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/tests/test_verify_release.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/release/verify-release.py",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/resolve-base-images.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/serve.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/suitability.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "src/app.ts",
+      "mode": "0644"
+    },
+    {
+      "path": "src/core.ts",
+      "mode": "0644"
+    },
+    {
+      "path": "src/dictionary.ts",
+      "mode": "0644"
+    },
+    {
+      "path": "src/policy.ts",
+      "mode": "0644"
+    },
+    {
+      "path": "src/profile-output.ts",
+      "mode": "0644"
+    },
+    {
+      "path": "src/profiles.ts",
+      "mode": "0644"
+    },
+    {
+      "path": "src/random-password.ts",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/advanced.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/browser-artifacts.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/browser-dialog.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/browser-direction-b.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/browser-focus-copy.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/browser-keysmith.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/browser-profiles.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/browser-regeneration.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/browser-selection.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/browser-themes.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/browser-ui-corrections.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/copy.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/core.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/dictionary.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/policy.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/profile-interface.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/profiles.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/random-password.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/readability.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/regeneration.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/release-config.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/theme.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tests/ui.test.mjs",
+      "mode": "0644"
+    },
+    {
+      "path": "tsconfig.json",
+      "mode": "0644"
+    }
+  ]
+}

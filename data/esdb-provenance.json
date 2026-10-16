@@ -1,0 +1,19 @@
+{
+  "name": "English Speller Database, US large (size 70)",
+  "repository": "https://github.com/en-wl/wordlist-diff",
+  "commit": "7f2f4078354752045ee16a041605686561122185",
+  "sourceUrl": "https://raw.githubusercontent.com/en-wl/wordlist-diff/7f2f4078354752045ee16a041605686561122185/en_US-large.txt",
+  "downloadedOn": "2026-10-08",
+  "sourceEntries": 168608,
+  "sourceSha256": "815abb6f1855304a6c3f358aa1e5ce85823140a547226ce4114386f9b796c30f",
+  "licenseSha256": "71bffd4b74ad47fff01c8b3c666e77da92737854e568850d8728024e0a53f304",
+  "exclusionsSha256": "2ef5c981b9a35ce1d527f32c54c16c54847d671969a0f6ab2186b4ed91ce6add",
+  "approvedEligibleWords": 17195,
+  "eligibleSha256": "7cade9674eb3afd9ed19afa958b413a3c9a6c8e1f3bbdf4acdd3c771cfa98cd4",
+  "filter": "Original lowercase ASCII words, 4–12 letters, no l/i/o, exact suitability exclusions, deduplicated and sorted. Capitalized source entries are omitted. Remove ESDB-marked offensive/vulgar entries using the bundled pinned annotations. Apply only the ten approved v0.4.0 EFF replacements.",
+  "annotationsUrl": "https://raw.githubusercontent.com/en-wl/wordlist-diff/7f2f4078354752045ee16a041605686561122185/scowl.txt",
+  "annotationsSha256": "3ca0f96ef1377a0e2ec4084025933afab8c8d90562257ae73638460f99d2f09c",
+  "sensitiveWordsSha256": "6a3fb84e804748151007c2b87785c1b07d66bc01eb4ebf0dd082c2db647acd43",
+  "readabilityOverridesSha256": "73e98b7ddcc652b94ce46f0cced7434fb4c2e5416dff4e5ab4f4ba0f122217be",
+  "effSha256": "addd35536511597a02fa0a9ff1e5284677b8883b83e986e43f15a3db996b903e"
+}

@@ -1,0 +1,37 @@
+services:
+  passwordforge:
+    platform: linux/amd64
+    image: passwordforge:${PASSWORDFORGE_TAG:-1.0.0}
+    pull_policy: never
+    container_name: passwordforge
+    restart: unless-stopped
+    user: "10001:10001"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 128
+    mem_limit: 128m
+    cpus: 1.0
+    networks:
+      - proxy
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: proxy
+      traefik.http.routers.passwordforge.rule: Host(`password.example.invalid`)
+      traefik.http.routers.passwordforge.entrypoints: websecure
+      traefik.http.routers.passwordforge.tls: "true"
+      traefik.http.routers.passwordforge.service: passwordforge
+      traefik.http.services.passwordforge.loadbalancer.server.port: "8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+networks:
+  proxy:
+    external: true

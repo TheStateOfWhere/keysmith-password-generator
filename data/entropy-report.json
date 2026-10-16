@@ -1,0 +1,329 @@
+{
+  "defaults": {
+    "minWordLength": 4,
+    "maxWordLength": 12,
+    "suffixLength": 6
+  },
+  "eligibleWords": 17195,
+  "minimumEntropyBits": 64,
+  "defaultValidSuffixes": "9453696",
+  "defaultCombinations": "48054315834761322240",
+  "defaultEntropyBits": 65.38129981042074,
+  "wordLengthRanges": [
+    {
+      "minWordLength": 4,
+      "maxWordLength": 4,
+      "eligibleWords": 1458,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 5,
+      "eligibleWords": 3885,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 6,
+      "eligibleWords": 7184,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 7,
+      "eligibleWords": 10484,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 8,
+      "eligibleWords": 13274,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 9,
+      "eligibleWords": 15155,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 10,
+      "eligibleWords": 16309,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 11,
+      "eligibleWords": 16915,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true
+    },
+    {
+      "minWordLength": 4,
+      "maxWordLength": 12,
+      "eligibleWords": 17195,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 5,
+      "eligibleWords": 2427,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 6,
+      "eligibleWords": 5726,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 7,
+      "eligibleWords": 9026,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 8,
+      "eligibleWords": 11816,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 9,
+      "eligibleWords": 13697,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 10,
+      "eligibleWords": 14851,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 11,
+      "eligibleWords": 15457,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true
+    },
+    {
+      "minWordLength": 5,
+      "maxWordLength": 12,
+      "eligibleWords": 15737,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 6,
+      "eligibleWords": 3299,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 7,
+      "eligibleWords": 6599,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 8,
+      "eligibleWords": 9389,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 9,
+      "eligibleWords": 11270,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 10,
+      "eligibleWords": 12424,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 11,
+      "eligibleWords": 13030,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true
+    },
+    {
+      "minWordLength": 6,
+      "maxWordLength": 12,
+      "eligibleWords": 13310,
+      "minimumSuffixLength": 6,
+      "sixCharacterSuffixAllowed": true
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 7,
+      "eligibleWords": 3300,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 8,
+      "eligibleWords": 6090,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 9,
+      "eligibleWords": 7971,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 10,
+      "eligibleWords": 9125,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 11,
+      "eligibleWords": 9731,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 7,
+      "maxWordLength": 12,
+      "eligibleWords": 10011,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 8,
+      "maxWordLength": 8,
+      "eligibleWords": 2790,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 8,
+      "maxWordLength": 9,
+      "eligibleWords": 4671,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 8,
+      "maxWordLength": 10,
+      "eligibleWords": 5825,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 8,
+      "maxWordLength": 11,
+      "eligibleWords": 6431,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 8,
+      "maxWordLength": 12,
+      "eligibleWords": 6711,
+      "minimumSuffixLength": 7,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 9,
+      "maxWordLength": 9,
+      "eligibleWords": 1881,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 9,
+      "maxWordLength": 10,
+      "eligibleWords": 3035,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 9,
+      "maxWordLength": 11,
+      "eligibleWords": 3641,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 9,
+      "maxWordLength": 12,
+      "eligibleWords": 3921,
+      "minimumSuffixLength": 8,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 10,
+      "maxWordLength": 10,
+      "eligibleWords": 1154,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 10,
+      "maxWordLength": 11,
+      "eligibleWords": 1760,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 10,
+      "maxWordLength": 12,
+      "eligibleWords": 2040,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 11,
+      "maxWordLength": 11,
+      "eligibleWords": 606,
+      "minimumSuffixLength": 10,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 11,
+      "maxWordLength": 12,
+      "eligibleWords": 886,
+      "minimumSuffixLength": 9,
+      "sixCharacterSuffixAllowed": false
+    },
+    {
+      "minWordLength": 12,
+      "maxWordLength": 12,
+      "eligibleWords": 280,
+      "minimumSuffixLength": 11,
+      "sixCharacterSuffixAllowed": false
+    }
+  ]
+}

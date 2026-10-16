@@ -1,0 +1,4 @@
+# LF source is portable across Windows and Linux.
+* text=auto eol=lf
+# Preserve third-party/pinned dictionary inputs, reports and notices byte-for-byte.
+/data/** -text -whitespace

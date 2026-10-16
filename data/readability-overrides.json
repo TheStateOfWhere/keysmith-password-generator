@@ -1,0 +1,17 @@
+{
+  "version": "0.4.0",
+  "previousEligibleSha256": "be4e9285000e75a93bca1cd53549b6e14fa8aeae50839db55d0c67e18808ead0",
+  "source": "Bundled EFF Long Wordlist (2016), CC BY 4.0; see NOTICE.md",
+  "replacements": [
+    {"remove":"abbr","add":"bargraph","reason":"Abbreviation; replace with a recognizable compound."},
+    {"remove":"acct","add":"bunkbed","reason":"Abbreviation; replace with a recognizable compound."},
+    {"remove":"advt","add":"handsfree","reason":"Abbreviation; replace with a recognizable compound."},
+    {"remove":"agcy","add":"handwash","reason":"Abbreviation; replace with a recognizable compound."},
+    {"remove":"brrr","add":"subheader","reason":"Repeated-letter interjection can be hard to count."},
+    {"remove":"shhh","add":"uncrushed","reason":"Repeated-letter interjection can be hard to count."},
+    {"remove":"xxxv","add":"undrafted","reason":"Roman-numeral form is awkward after capitalization."},
+    {"remove":"crwth","add":"unpadded","reason":"Uncommon consonant-heavy spelling."},
+    {"remove":"crwths","add":"untracked","reason":"Uncommon consonant-heavy spelling."},
+    {"remove":"cwms","add":"unturned","reason":"Uncommon consonant-heavy spelling."}
+  ]
+}
