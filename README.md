@@ -92,26 +92,39 @@ See [INSTALLATION.md](INSTALLATION.md) for updates and removal.
 
 ## Screenshots
 
-Captured from the real Zevyrn application. Any visible passwords are public
-examples and must not be used as credentials. These retained captures show the
-approved design before the 1.1.0 header-version update; the layout, themes and
-workflows are unchanged.
+Captured from the real Zevyrn v1.1.0 application at 1280px desktop and 390px
+mobile widths. All five approved themes are shown below. Any visible passwords
+are public examples generated for these screenshots and must not be used as
+credentials. The compact mobile header hides the version label; desktop captures
+show v1.1.0.
 
 ### Desktop — Zevyrn theme
 
-![Zevyrn desktop in the Zevyrn theme](docs/screenshots/desktop-light.png)
+![Zevyrn v1.1.0 desktop in the default Zevyrn theme](docs/screenshots/desktop-zevyrn.jpg)
 
 ### Desktop — Midnight theme
 
-![Zevyrn desktop in the Midnight theme](docs/screenshots/desktop-dark.png)
+![Zevyrn v1.1.0 desktop in the Midnight theme](docs/screenshots/desktop-midnight.jpg)
+
+### Desktop — Aurora theme
+
+![Zevyrn v1.1.0 desktop in the Aurora theme](docs/screenshots/desktop-aurora.jpg)
+
+### Desktop — Dusk theme
+
+![Zevyrn v1.1.0 desktop in the Dusk theme](docs/screenshots/desktop-dusk.jpg)
+
+### Desktop — Slate theme
+
+![Zevyrn v1.1.0 desktop in the Slate theme](docs/screenshots/desktop-slate.jpg)
 
 ### Mobile responsive layout
 
-![Zevyrn responsive mobile layout](docs/screenshots/mobile.png)
+![Zevyrn v1.1.0 responsive layout at 390px in the default theme](docs/screenshots/mobile-zevyrn.jpg)
 
 ### Five-password batch
 
-![Zevyrn displaying five generated example passwords](docs/screenshots/batch-five.png)
+![Zevyrn v1.1.0 displaying five generated public example passwords](docs/screenshots/batch-five-zevyrn.jpg)
 
 ## Development and licensing
 
@@ -127,6 +140,6 @@ retained verbatim to preserve pinned dictionary attribution and provenance; the
 current product name is Zevyrn.
 
 Project: [TheStateOfWhere/zevyrn-password-generator](https://github.com/TheStateOfWhere/zevyrn-password-generator).
-Canonical URLs are prepared for the coordinated rename described in the
-[repository rename notes](docs/REPOSITORY-RENAME.md). Existing Docker image,
+The [repository rename notes](docs/REPOSITORY-RENAME.md) describe the completed
+rename and retained compatibility identifiers. Existing Docker image,
 service, project and `KEYSMITH_*` configuration names remain compatible.

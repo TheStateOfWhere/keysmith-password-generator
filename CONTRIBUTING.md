@@ -21,8 +21,12 @@ them or their hashes without reviewing the intended data change.
 `tests/browser-*.mjs` suites require Playwright and Microsoft Edge outside this
 package. Set `KEYSMITH_PLAYWRIGHT_MODULE` to the installed Playwright module path
 and `KEYSMITH_BROWSER_PATH` to the Edge executable when those are not found by
-default. These variables are for optional browser tests, not the Docker runtime. Browser screenshots are test artifacts, never
-part of a source release. Use public fixtures, not real generated passwords.
+default. These variables are for optional browser tests, not the Docker runtime.
+Automated browser captures belong in the ignored `artifacts/` directory, not a
+source release. Curated README images under `docs/screenshots/` are reviewed
+documentation assets captured from the real application. Use only public test
+examples that will never serve as credentials; never capture personal passwords
+or other sensitive information.
 
 Do not commit credentials, TLS material, `.env`, logs, dependencies, generated
 `dist/`, or test artifacts. See SECURITY.md for confidential reporting and LICENSE

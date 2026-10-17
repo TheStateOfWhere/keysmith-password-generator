@@ -1,4 +1,5 @@
 import {openSettings,closeSettings,selectProfile} from './browser-dialog.mjs';
+import {auditContrast} from './browser-contrast.mjs';
 // Local-only Edge verification. Passwords are deterministic public fixtures.
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
@@ -47,41 +48,7 @@ const snapshot=page=>page.evaluate(()=>({passwords:[...document.querySelectorAll
   copies:themeFixture.copies,draws:themeFixture.draws,copyDisabled:document.querySelector('#copy-all').disabled,
   cards:[...document.querySelectorAll('.password-row')].map(e=>e.outerHTML)}));
 async function contrast(page,label){
-  const report=await page.evaluate(()=>{
-    const failures=[];let textChecks=0,controlChecks=0,focusChecks=0;
-    const rgb=s=>s.match(/[\d.]+/g).map(Number);
-    const composite=(f,b)=>{const a=f[3]??1;return [0,1,2].map(i=>f[i]*a+b[i]*(1-a));};
-    const bg=e=>{const chain=[];for(let p=e;p;p=p.parentElement)chain.unshift(p);let b=[255,255,255];for(const p of chain)b=composite(rgb(getComputedStyle(p).backgroundColor),b);return b;};
-    const luminance=a=>a.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
-    const ratio=(f,b)=>{const a=luminance(f),c=luminance(b);return (Math.max(a,c)+.05)/(Math.min(a,c)+.05);};
-    for(const e of document.querySelectorAll('body *')){
-      if(!e.getClientRects().length||e.matches(':disabled')||e.closest('fieldset:disabled')||e.classList.contains('sr-only')||e.closest('svg'))continue;
-      const cs=getComputedStyle(e);
-      const ownText=[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim());
-      if(ownText||e.matches('input,select,textarea')){
-        const stops=(cs.backgroundImage.match(/rgba?\([^)]+\)/g)||[]).map(rgb);
-        let value=ratio(composite(rgb(cs.color),bg(e)),bg(e));
-        if(stops.length>1){
-          value=Infinity;
-          for(let j=1;j<stops.length;j++)for(let i=0;i<=1000;i++){
-            const b=stops[j-1].map((v,k)=>v+(stops[j][k]-v)*i/1000);
-            value=Math.min(value,ratio(composite(rgb(cs.color),b),b));
-          }
-        }
-        textChecks++;
-        if(value<4.5)failures.push({element:e.id||e.tagName,kind:'text',ratio:value});
-      }
-      if(e.matches('input[type=number],input[type=text],textarea,select,button:not(.primary)')&&parseFloat(cs.borderTopWidth)>0){
-        controlChecks++;const value=ratio(rgb(cs.borderTopColor),bg(e));
-        if(value<3)failures.push({element:e.id||e.tagName,kind:'control border',ratio:value});
-      }
-      if(e===document.activeElement&&cs.outlineStyle!=='none'){
-        focusChecks++;const value=ratio(rgb(cs.outlineColor),bg(e.parentElement));
-        if(value<3)failures.push({element:e.id||e.tagName,kind:'focus',ratio:value});
-      }
-    }
-    return {failures,textChecks,controlChecks,focusChecks};
-  });
+  const report=await page.evaluate(auditContrast);
   assert.deepEqual(report.failures,[],label+' rendered contrast');results.contrast.push({label,...report});
 }
 try{
