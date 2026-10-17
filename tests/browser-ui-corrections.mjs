@@ -19,7 +19,7 @@ try{
   Object.defineProperty(navigator.clipboard,'writeText',{configurable:true,value:async value=>{fixtureWrites.push(value);}});
   const scroll=HTMLElement.prototype.scrollIntoView;HTMLElement.prototype.scrollIntoView=function(options){fixtureScrolls.push(options);return scroll.call(this,options);};
   for(const name of ['fetch','XMLHttpRequest','WebSocket'])Object.defineProperty(globalThis,name,{configurable:true,value:()=>{fixtureLeaks++;throw Error('Unexpected network API');}});
-  Object.defineProperty(Storage.prototype,'setItem',{configurable:true,value:function(key,value){if(this===window.localStorage&&key==='keysmith.theme'&&['automatic','light','dark','emerald','amethyst'].includes(value))return;fixtureLeaks++;throw Error('Unexpected storage write');}});
+  Object.defineProperty(Storage.prototype,'setItem',{configurable:true,value:function(key,value){if(this===window.localStorage&&key==='keysmith.theme'&&['zevyrn','midnight','aurora','dusk','slate'].includes(value))return;fixtureLeaks++;throw Error('Unexpected storage write');}});
  });
  await page.goto('http://127.0.0.1:4173/',{waitUntil:'networkidle'});const originalUrl=page.url();page.on('request',r=>requests.push(r.resourceType()));
  const generate=page.locator('#generate');

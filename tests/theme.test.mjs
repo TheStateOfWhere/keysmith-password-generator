@@ -4,10 +4,10 @@ import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
 
 const source = await readFile(new URL('../public/theme.js', import.meta.url), 'utf8');
-const themes = ['automatic', 'light', 'dark', 'emerald', 'amethyst'];
+const themes = ['zevyrn', 'midnight', 'aurora', 'dusk', 'slate'];
 function fixture(saved, {readFails=false, writeFails=false, getterFails=false}={}) {
   const attributes = {}, listeners = {}, writes = [], reads = [];
-  const selector = {value:'automatic', disabled:true, addEventListener(name, fn){listeners[name]=fn;}};
+  const selector = {value:'zevyrn', disabled:true, addEventListener(name, fn){listeners[name]=fn;}};
   const message = {textContent:'', hidden:true};
   const document = {documentElement:{setAttribute(key,value){attributes[key]=value;}},
     getElementById(id){return id==='theme'?selector:message;},
@@ -28,27 +28,27 @@ for(const theme of themes)test('restores '+theme+' before selector initializatio
 });
 test('missing and invalid preferences fall back without rewriting storage',()=>{
   for(const value of [null,undefined,'','DARK','dark ','<script>','__proto__','{"theme":"dark"}',42]){
-    const f=fixture(value);f.ready();assert.equal(f.attributes['data-theme'],'automatic');assert.deepEqual(f.writes,[]);
+    const f=fixture(value);f.ready();assert.equal(f.attributes['data-theme'],'zevyrn');assert.deepEqual(f.writes,[]);
   }
 });
-test('denied reads and storage getter use Automatic with session notice',()=>{
+test('denied reads and storage getter use Zevyrn with session notice',()=>{
   for(const options of [{readFails:true},{getterFails:true}]){
-    const f=fixture('dark',options);f.ready();assert.equal(f.selector.value,'automatic');
+    const f=fixture('dark',options);f.ready();assert.equal(f.selector.value,'zevyrn');
     assert.equal(f.message.hidden,false);assert.match(f.message.textContent,/session/);
   }
 });
 test('failed writes retain active preference and accessible feedback',()=>{
-  const f=fixture(null,{writeFails:true});f.ready();f.change('emerald');
-  assert.equal(f.attributes['data-theme'],'emerald');assert.equal(f.selector.value,'emerald');
+  const f=fixture(null,{writeFails:true});f.ready();f.change('aurora');
+  assert.equal(f.attributes['data-theme'],'aurora');assert.equal(f.selector.value,'aurora');
   assert.equal(f.message.hidden,false);assert.deepEqual(f.writes,[]);
 });
 test('successful saving clears earlier read-failure notice',()=>{
-  const f=fixture(null,{readFails:true});f.ready();f.change('amethyst');
-  assert.equal(f.message.hidden,true);assert.deepEqual(f.writes,[['keysmith.theme','amethyst']]);
+  const f=fixture(null,{readFails:true});f.ready();f.change('dusk');
+  assert.equal(f.message.hidden,true);assert.deepEqual(f.writes,[['keysmith.theme','dusk']]);
 });
-test('untrusted selector value can persist only Automatic',()=>{
+test('untrusted selector value can persist only Zevyrn',()=>{
   const f=fixture(null);f.ready();f.change('password-value');
-  assert.equal(f.selector.value,'automatic');assert.deepEqual(f.writes,[['keysmith.theme','automatic']]);
+  assert.equal(f.selector.value,'zevyrn');assert.deepEqual(f.writes,[['keysmith.theme','zevyrn']]);
 });
 test('early external script, labelled native control, and unchanged CSP',async()=>{
   const html=await readFile(new URL('../public/index.html',import.meta.url),'utf8');
@@ -61,4 +61,10 @@ test('built theme is exact source and referenced by the served entry point',asyn
   assert.equal(await readFile(new URL('../dist/theme.js',import.meta.url),'utf8'),source);
   const html=await readFile(new URL('../dist/index.html',import.meta.url),'utf8');
   assert.match(html,/<script src="\.\/theme\.js"><\/script>/);
+});
+
+test('legacy preferences map without rewriting the compatibility key',()=>{
+  for(const [saved,expected] of Object.entries({automatic:'zevyrn',light:'zevyrn',dark:'midnight',emerald:'aurora',amethyst:'dusk'})){
+    const f=fixture(saved);f.ready();assert.equal(f.selector.value,expected);assert.deepEqual(f.writes,[]);
+  }
 });

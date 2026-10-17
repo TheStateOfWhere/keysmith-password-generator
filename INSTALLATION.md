@@ -1,6 +1,6 @@
 # Docker installation
 
-Build from source as shown in [README.md](README.md). No public KeySmith registry
+Build from source as shown in [README.md](README.md). No public Zevyrn registry
 image is currently provided. The standalone default needs no environment file.
 For remote browser access, choose one HTTPS alternative below.
 
@@ -26,7 +26,7 @@ public-domain name used internally. A private-only name generally needs your
 organization's private CA. Obtain certificates through your existing issuer;
 these examples do not enroll certificates or create a CA. For a private CA,
 distribute its public root certificate through your normal client trust process
-to every browser/device that will access KeySmith. Supplying the server's
+to every browser/device that will access Zevyrn. Supplying the server's
 certificate files to a container does not establish client trust.
 
 For a command-line check using an explicitly trusted private root:
@@ -111,7 +111,7 @@ The pinned official Caddy binary has a `NET_BIND_SERVICE` file capability. Its
 service drops all capabilities and adds back only `NET_BIND_SERVICE` so Linux
 can execute that binary. Removing this exception can cause
 `exec /usr/bin/caddy: operation not permitted`, even though Caddy listens on
-unprivileged container port 8443. KeySmith receives no added capabilities; both
+unprivileged container port 8443. Zevyrn receives no added capabilities; both
 services remain non-root with read-only filesystems and `no-new-privileges`.
 
 ## Health, troubleshooting and maintenance
@@ -183,8 +183,10 @@ check `http://127.0.0.1:18080/healthz` (or your configured loopback port). For H
 use your hostname and normal CA trust, or the explicit private-root check above.
 Changes to pinned dependencies require review, not automatic substitution.
 New builds are separate images; prior vulnerability results do not qualify them.
-The theme preference now uses `keysmith.theme`; select your theme again after
-upgrading from older builds. Password generation is unchanged.
+The existing `keysmith.theme` preference key is retained for compatibility.
+Legacy Automatic/Light map to Zevyrn, Dark to Midnight, Emerald to Aurora, and
+Amethyst to Dusk. New installations default to Zevyrn; Slate is a new choice.
+Only a theme identifier is saved. Password generation is unchanged.
 No automatic updater, custom release framework or retained rollback image is
 required by these examples.
 

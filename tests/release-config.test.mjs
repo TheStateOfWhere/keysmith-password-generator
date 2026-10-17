@@ -64,13 +64,13 @@ test('browser screenshots stay in separate ignored per-run directories', async (
 
 test('release metadata agrees and historical dictionary provenance stays unchanged', async () => {
   const pkg=JSON.parse(await read('package.json')),lock=JSON.parse(await read('package-lock.json'));
-  assert.equal(pkg.name,'keysmith');
+  assert.equal(pkg.name,'zevyrn');
   assert.equal(lock.name,pkg.name);
   assert.equal(lock.packages[''].name,pkg.name);
   assert.equal(pkg.version,'1.0.0');
   assert.equal(lock.version,pkg.version);
   assert.equal(lock.packages[''].version,pkg.version);
-  assert.match(await read('Dockerfile'),/org.opencontainers.image.title="KeySmith"/);
+  assert.match(await read('Dockerfile'),/org.opencontainers.image.title="Zevyrn"/);
   assert.match(await read('Dockerfile'),/org.opencontainers.image.version="1.0.0"/);
   assert.match(await read('public/index.html'),/class="version">v1.0.0/);
   assert.equal(JSON.parse(await read('data/readability-overrides.json')).version,'0.4.0');

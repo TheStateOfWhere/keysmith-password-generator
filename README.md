@@ -1,8 +1,10 @@
-# KeySmith
+# Zevyrn
 
-Self-hosted password generation in your browser. KeySmith provides Readable,
+**Secure passwords. Easy on the eyes.**
+
+Self-hosted password generation in your browser. Zevyrn provides Readable,
 Strong Random and Custom Policy profiles, single-password and batch views,
-copying controls, Large Text and five themes.
+copying controls, Large Text and five themes: Zevyrn (default), Midnight, Aurora, Dusk and Slate.
 
 Passwords are generated on your device using Web Crypto. There is no backend
 password storage, telemetry or external dictionary service. Only the selected
@@ -10,7 +12,7 @@ theme is saved. Clear does not erase OS clipboard history or securely wipe memor
 
 ## Install from source
 
-There is currently no official published KeySmith container image. Build from
+There is currently no official published Zevyrn container image. Build from
 this repository; a locally built image is named `keysmith:1.0.0-local`.
 
 Requirements: Linux/amd64 containers, Git, maintained Docker Engine 28 or newer,
@@ -24,8 +26,8 @@ working. Commands below use a POSIX shell; prefix Docker commands with `sudo` if
 your account does not have Docker access.
 
 ```sh
-git clone https://github.com/TheStateOfWhere/keysmith-password-generator.git
-cd keysmith-password-generator
+git clone https://github.com/TheStateOfWhere/keysmith-password-generator.git zevyrn-password-generator
+cd zevyrn-password-generator
 docker version
 docker compose version
 docker buildx version
@@ -86,24 +88,24 @@ See [INSTALLATION.md](INSTALLATION.md) for updates and removal.
 
 ## Screenshots
 
-Captured from the real KeySmith application. Any visible passwords are public
+Captured from the real Zevyrn application. Any visible passwords are public
 examples and must not be used as credentials.
 
-### Desktop — light theme
+### Desktop — Zevyrn theme
 
-![KeySmith desktop in the light theme](docs/screenshots/desktop-light.png)
+![Zevyrn desktop in the Zevyrn theme](docs/screenshots/desktop-light.png)
 
-### Desktop — dark theme
+### Desktop — Midnight theme
 
-![KeySmith desktop in the dark theme](docs/screenshots/desktop-dark.png)
+![Zevyrn desktop in the Midnight theme](docs/screenshots/desktop-dark.png)
 
 ### Mobile responsive layout
 
-![KeySmith responsive mobile layout](docs/screenshots/mobile.png)
+![Zevyrn responsive mobile layout](docs/screenshots/mobile.png)
 
 ### Five-password batch
 
-![KeySmith displaying five generated example passwords](docs/screenshots/batch-five.png)
+![Zevyrn displaying five generated example passwords](docs/screenshots/batch-five.png)
 
 ## Development and licensing
 
@@ -116,4 +118,8 @@ Application: [MIT](LICENSE). Dictionary data retains its separate licenses and
 [attribution](data/NOTICE.md). Application and third-party notices are included in
 the built `/licenses/` assets. Historical project names in `data/NOTICE.md` are
 retained verbatim to preserve pinned dictionary attribution and provenance; the
-current product name is KeySmith.
+current product name is Zevyrn.
+
+The repository URL currently retains the previous product name. See the
+[repository rename dependency](docs/REPOSITORY-RENAME.md). Existing Docker image,
+service, project and `KEYSMITH_*` configuration names are retained for compatibility.

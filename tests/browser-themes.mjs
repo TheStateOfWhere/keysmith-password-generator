@@ -11,7 +11,7 @@ const artifact=await screenshotDirectory('themes');
 const root=fileURLToPath(new URL('../',import.meta.url));
 const server=spawn(process.execPath,['scripts/serve.mjs'],{cwd:root,stdio:['ignore','pipe','pipe']});
 let browser;
-const themes=['automatic','light','dark','emerald','amethyst'];
+const themes=['zevyrn','midnight','aurora','dusk','slate'];
 const results={cases:[],contrast:[],storage:[],screenshots:[]};
 async function setup(options={}){
   const context=await browser.newContext({viewport:{width:1280,height:1000},colorScheme:'light',reducedMotion:'reduce',
@@ -26,7 +26,7 @@ async function setup(options={}){
     const get=Storage.prototype.getItem,set=Storage.prototype.setItem;
     Storage.prototype.getItem=function(key){if(readFail)throw new DOMException('Denied','SecurityError');return get.call(this,key);};
     Storage.prototype.setItem=function(key,value){
-      if(this!==window.localStorage||key!=='keysmith.theme'||!['automatic','light','dark','emerald','amethyst'].includes(value)){themeFixture.unsafe++;throw Error('Forbidden persistence');}
+      if(this!==window.localStorage||key!=='keysmith.theme'||!['zevyrn','midnight','aurora','dusk','slate'].includes(value)){themeFixture.unsafe++;throw Error('Forbidden persistence');}
       if(writeFail)throw new DOMException('Denied','QuotaExceededError');
       themeFixture.writes.push([key,value]);return set.call(this,key,value);
     };
@@ -59,7 +59,16 @@ async function contrast(page,label){
       const cs=getComputedStyle(e);
       const ownText=[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim());
       if(ownText||e.matches('input,select,textarea')){
-        const value=ratio(composite(rgb(cs.color),bg(e)),bg(e));textChecks++;
+        const stops=(cs.backgroundImage.match(/rgba?\([^)]+\)/g)||[]).map(rgb);
+        let value=ratio(composite(rgb(cs.color),bg(e)),bg(e));
+        if(stops.length>1){
+          value=Infinity;
+          for(let j=1;j<stops.length;j++)for(let i=0;i<=1000;i++){
+            const b=stops[j-1].map((v,k)=>v+(stops[j][k]-v)*i/1000);
+            value=Math.min(value,ratio(composite(rgb(cs.color),b),b));
+          }
+        }
+        textChecks++;
         if(value<4.5)failures.push({element:e.id||e.tagName,kind:'text',ratio:value});
       }
       if(e.matches('input[type=number],input[type=text],textarea,select,button:not(.primary)')&&parseFloat(cs.borderTopWidth)>0){
@@ -79,7 +88,7 @@ try{
   await new Promise((resolve,reject)=>{server.stdout.once('data',resolve);server.once('error',reject);server.once('exit',()=>reject(Error('Local preview stopped')));});
   browser=await chromium.launch({headless:true,...(process.env.KEYSMITH_BROWSER_PATH?{executablePath:process.env.KEYSMITH_BROWSER_PATH}:{})});results.browser=browser.version();
   const f=await setup();const {page}=f;
-  assert.equal(await page.locator('#theme').inputValue(),'automatic');
+  assert.equal(await page.locator('#theme').inputValue(),'zevyrn');
   for(const profile of ['readable','strong-random','custom-policy']){
     await openSettings(page);await selectProfile(page,profile);await closeSettings(page);await page.locator('#count').selectOption('5');
     if(profile==='custom-policy'){await openSettings(page);await page.locator('#custom-length').fill('128');}
@@ -97,7 +106,7 @@ try{
           assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'No horizontal overflow');
           const box=await page.locator('#theme').boundingBox();assert.ok(box.height>=44);
           results.cases.push({profile,theme,hidden,width});
-          if(profile==='custom-policy'&&theme==='amethyst'&&!hidden&&width<=390){const path=artifact('amethyst-long-mobile-'+width+'.png');await page.screenshot({path,fullPage:true});results.screenshots.push(path);}
+          if(profile==='custom-policy'&&theme==='dusk'&&!hidden&&width<=390){const path=artifact('amethyst-long-mobile-'+width+'.png');await page.screenshot({path,fullPage:true});results.screenshots.push(path);}
         }
         if(profile==='readable'&&!hidden){const path=artifact(theme+'-desktop.png');await page.screenshot({path,fullPage:true});results.screenshots.push(path);}
       }
@@ -128,19 +137,17 @@ try{
   for(const theme of themes){const before=await snapshot(page);await closeSettings(page);await page.locator('#theme').selectOption(theme);assert.deepEqual(await snapshot(page),before,'Invalid settings and stale copy state preserved');assert.equal(await page.locator('#copy-all').isDisabled(),true);await closeSettings(page);await page.locator('#theme').hover();await contrast(page,'errors/hover/'+theme);await openSettings(page);await page.locator('#custom-exclusions').focus();await contrast(page,'settings/errors/'+theme);await closeSettings(page);}
   await openSettings(page);await page.locator('#custom-exclusions').fill('');await closeSettings(page);await page.locator('#theme').focus();
   await page.keyboard.press('Home');await page.keyboard.press('ArrowDown');await page.keyboard.press('Enter');
-  assert.equal(await page.locator('#theme').inputValue(),'light');assert.equal(await page.evaluate(()=>document.activeElement.id),'theme');
+  assert.equal(await page.locator('#theme').inputValue(),'midnight');assert.equal(await page.evaluate(()=>document.activeElement.id),'theme');
   await page.keyboard.press('Escape');await page.keyboard.press('Tab');assert.equal(await page.locator('[data-profile]').first().evaluate(e=>document.activeElement===e),true);
   assert.deepEqual(f.requests,[],'No theme/profile interaction requests before reload');
-  await closeSettings(page);await page.locator('#theme').selectOption('automatic');const automaticState=await snapshot(page);const automaticWrites=await page.evaluate(()=>themeFixture.writes);await page.emulateMedia({colorScheme:'dark'});assert.equal(await background(page),'rgb(17, 24, 39)');
-  await page.emulateMedia({colorScheme:'light'});assert.equal(await background(page),'rgb(246, 247, 249)');assert.deepEqual(await snapshot(page),automaticState);assert.deepEqual(await page.evaluate(()=>themeFixture.writes),automaticWrites);
-  for(const theme of ['light','dark','emerald','amethyst']){
+  for(const theme of ['zevyrn','midnight','aurora','dusk','slate']){
     await closeSettings(page);await page.locator('#theme').selectOption(theme);const b=await background(page);await page.emulateMedia({colorScheme:'dark'});assert.equal(await background(page),b);await page.emulateMedia({colorScheme:'light'});assert.equal(await background(page),b);
     await page.reload({waitUntil:'networkidle'});assert.equal(await page.locator('#theme').inputValue(),theme);
     assert.equal(await page.evaluate(()=>themeFixture.firstFrame.theme),theme);
     assert.equal(await page.evaluate(()=>themeFixture.firstFrame.background),b);results.storage.push({theme,reload:true,firstFrame:true});
   }
   // After the last reload, isolate requests from theme changes.
-  f.requests.length=0;await closeSettings(page);await page.locator('#theme').selectOption('emerald');await page.waitForTimeout(100);assert.deepEqual(f.requests,[]);
+  f.requests.length=0;await closeSettings(page);await page.locator('#theme').selectOption('aurora');await page.waitForTimeout(100);assert.deepEqual(f.requests,[]);
   assert.equal(await page.evaluate(()=>themeFixture.unsafe),0);assert.equal(await page.evaluate(()=>sessionStorage.length),0);
   assert.deepEqual(await page.evaluate(()=>Object.keys(localStorage)),['keysmith.theme']);
   assert.deepEqual(f.errors,[]);assert.deepEqual(f.logs,[]);
@@ -150,10 +157,10 @@ try{
   const forced=artifact('forced-colors.png');await page.screenshot({path:forced,fullPage:true});results.screenshots.push(forced);await f.context.close();
   for(const options of [{saved:'bogus'},{saved:'dark',readFail:true},{writeFail:true},{scriptFailure:true}]){
     const t=await setup(options);
-    assert.equal(await t.page.locator('#theme').inputValue(),'automatic');
-    if(options.scriptFailure){assert.equal(await t.page.locator('#theme').isDisabled(),true);await t.page.emulateMedia({colorScheme:'dark'});assert.equal(await background(t.page),'rgb(17, 24, 39)');}
+    assert.equal(await t.page.locator('#theme').inputValue(),'zevyrn');
+    if(options.scriptFailure){assert.equal(await t.page.locator('#theme').isDisabled(),true);await t.page.emulateMedia({colorScheme:'dark'});assert.equal(await background(t.page),'rgb(247, 249, 255)');}
     else{
-      await t.page.locator('#theme').selectOption('amethyst');assert.equal(await t.page.evaluate(()=>document.documentElement.dataset.theme),'amethyst');
+      await t.page.locator('#theme').selectOption('dusk');assert.equal(await t.page.evaluate(()=>document.documentElement.dataset.theme),'dusk');
       if(options.writeFail){assert.equal(await t.page.locator('#theme-save-status').isVisible(),true);await contrast(t.page,'save-failure');}
       if(options.readFail)assert.equal(await t.page.locator('#theme-save-status').isVisible(),false); // successful save recovers
     }

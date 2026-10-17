@@ -30,7 +30,7 @@ try{
   Object.defineProperty(globalThis,'crypto',{configurable:true,value:{getRandomValues(b){if(b instanceof Uint8Array){b.fill(0);b[b.length-1]=rank++%256;}else b[0]=[0,0,0,0,8,0,8,0,8][word++%9];return b;}}});
   Object.defineProperty(navigator.clipboard,'writeText',{configurable:true,value:async value=>{fixtureCopies.push(value);}});
   const set=Storage.prototype.setItem;
-  Storage.prototype.setItem=function(k,v){if(this!==localStorage||k!=='keysmith.theme'||!['automatic','light','dark','emerald','amethyst'].includes(v)){fixturePersistence++;throw Error('Unexpected persistence');}return set.call(this,k,v);};
+  Storage.prototype.setItem=function(k,v){if(this!==localStorage||k!=='keysmith.theme'||!['zevyrn','midnight','aurora','dusk','slate'].includes(v)){fixturePersistence++;throw Error('Unexpected persistence');}return set.call(this,k,v);};
  });
  const page=await context.newPage();page.on('pageerror',()=>errors.push('Page error'));
  const openSettings=()=>openDialog(page);

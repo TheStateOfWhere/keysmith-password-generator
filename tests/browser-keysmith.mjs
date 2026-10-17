@@ -28,21 +28,21 @@ try{
   Object.defineProperty(globalThis,'crypto',{configurable:true,value:{getRandomValues(b){if(b instanceof Uint8Array){b.fill(0);b[b.length-1]=rank++%256;}else b[0]=[0,0,0,0,8,0,8,0,8][word++%9];return b;}}});
   Object.defineProperty(navigator.clipboard,'writeText',{configurable:true,value:async value=>fixtureCopies.push(value)});
   const set=Storage.prototype.setItem;
-  Storage.prototype.setItem=function(k,v){if(this!==localStorage||k!=='keysmith.theme'||!['automatic','light','dark','emerald','amethyst'].includes(v)){fixtureWrites++;throw Error('Unexpected persistence');}return set.call(this,k,v);};
+  Storage.prototype.setItem=function(k,v){if(this!==localStorage||k!=='keysmith.theme'||!['zevyrn','midnight','aurora','dusk','slate'].includes(v)){fixtureWrites++;throw Error('Unexpected persistence');}return set.call(this,k,v);};
  });
  const page=await context.newPage();page.on('pageerror',()=>errors.push('Page error'));
  await page.goto('http://127.0.0.1:4173/',{waitUntil:'networkidle'});
- assert.equal(await page.title(),'KeySmith');
- assert.equal(await page.getByRole('link',{name:'KeySmith home',exact:true}).count(),1);
+ assert.equal(await page.title(),'Zevyrn');
+ assert.equal(await page.getByRole('link',{name:'Zevyrn home',exact:true}).count(),1);
  assert.equal(await page.locator('.brand svg').count(),1);
- assert.match(await page.locator('footer').textContent(),/KeySmith/);
+ assert.match(await page.locator('footer').textContent(),/Zevyrn/);
  assert.equal(await page.locator('.version').textContent(),'v1.0.0');
  await page.locator('#generate').click();
  const shot=async name=>{const path=artifact(name+'.png');await page.screenshot({path,fullPage:true});results.screenshots.push(path);};
  const surfaces=new Map();
- for(const theme of ['light','dark','emerald','amethyst','automatic']){
+ for(const theme of ['zevyrn','midnight','aurora','dusk','slate']){
   await page.emulateMedia({colorScheme:'light'});await page.locator('#theme').selectOption(theme);
-  for(const scheme of theme==='automatic'?['light','dark']:['dark']){
+  for(const scheme of ['light','dark']){
    await page.emulateMedia({colorScheme:scheme});
    const state=await page.evaluate(()=>{
     const root=getComputedStyle(document.documentElement),select=document.querySelector('#theme'),option=select.options[0];
@@ -50,17 +50,17 @@ try{
    });
    assert.equal(state.optionColor,state.selectColor);
    assert.ok(!state.optionBackground.endsWith(', 0)'),'Native options have an opaque background');
-   assert.equal(state.scheme,theme==='light'||(theme==='automatic'&&scheme==='light')?'light':'dark');
+   assert.equal(state.scheme,theme==='midnight'?'dark':'light');
    results.themes.push({theme,scheme,...state});
-   if(theme!=='automatic')surfaces.set(theme,state.background);
+   surfaces.set(theme,state.background);
   }
-  if(theme!=='automatic')await shot(theme+'-focus-1280');
+  await shot(theme+'-focus-1280');
  }
- assert.equal(new Set(surfaces.values()).size,4,'All four explicit theme surfaces differ');
- await page.locator('#theme').selectOption('emerald');await page.reload();assert.equal(await page.locator('#theme').inputValue(),'emerald');
+ assert.equal(new Set(surfaces.values()).size,5,'All five theme backgrounds differ');
+ await page.locator('#theme').selectOption('aurora');await page.reload();assert.equal(await page.locator('#theme').inputValue(),'aurora');
  // Native select keyboard interaction remains intact.
  await page.locator('#theme').focus();await page.keyboard.press('Home');await page.keyboard.press('ArrowDown');await page.keyboard.press('Enter');
- assert.equal(await page.locator('#theme').inputValue(),'light');
+ assert.equal(await page.locator('#theme').inputValue(),'midnight');
  await page.locator('[data-profile=custom-policy]').click();
  assert.equal(await page.locator('#settings-disclosure').evaluate(e=>e.open),false);
  assert.equal(await page.locator('#custom-policy-inline').isVisible(),true);
@@ -117,5 +117,5 @@ try{
  assert.equal(await page.locator('#custom-length').inputValue(),'32','The same controls retain state without mirrors');
  assert.equal(await page.evaluate(()=>fixtureWrites),0);assert.deepEqual(requests,[]);assert.deepEqual(errors,[]);
  results.status='PASS';await writeFile(artifact('results.png').replace(/\.png$/,'.json'),JSON.stringify(results,null,2)+'\n');
- console.log('PASS: KeySmith branding; native option palettes/keyboard; five themes; inline form ownership, errors and Enter; modal isolation; 12 responsive batch/large-text cases; exact hidden copying; no requests/persistence. '+artifact('results.png').replace(/\.png$/,'.json'));
+ console.log('PASS: Zevyrn branding; native option palettes/keyboard; five themes; inline form ownership, errors and Enter; modal isolation; 12 responsive batch/large-text cases; exact hidden copying; no requests/persistence. '+artifact('results.png').replace(/\.png$/,'.json'));
 }finally{await browser?.close();server.kill();}

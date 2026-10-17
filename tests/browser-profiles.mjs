@@ -19,7 +19,7 @@ try{
    if(b instanceof Uint8Array){b.fill(0);b[b.length-1]=rank++%256;}else b[0]=[0,0,0,0,8,0,8,0,8][wordOffset++%9];return b;}}});
   Object.defineProperty(navigator.clipboard,'writeText',{configurable:true,value:async value=>{if(globalThis.fixtureFailCopy)throw Error('Public fixture clipboard failure');globalThis.fixtureWrites.push(value);}});
   for(const name of ['fetch','XMLHttpRequest','WebSocket'])Object.defineProperty(globalThis,name,{configurable:true,value:()=>{globalThis.fixtureLeaks++;throw Error('Unexpected network use');}});
-  Object.defineProperty(Storage.prototype,'setItem',{configurable:true,value:function(key,value){if(this===window.localStorage&&key==='keysmith.theme'&&['automatic','light','dark','emerald','amethyst'].includes(value))return;globalThis.fixtureLeaks++;throw Error('Unexpected persistent write');}});
+  Object.defineProperty(Storage.prototype,'setItem',{configurable:true,value:function(key,value){if(this===window.localStorage&&key==='keysmith.theme'&&['zevyrn','midnight','aurora','dusk','slate'].includes(value))return;globalThis.fixtureLeaks++;throw Error('Unexpected persistent write');}});
  });
  await page.goto('http://127.0.0.1:4173/',{waitUntil:'networkidle'});const startUrl=page.url(),requests=[];page.on('request',r=>requests.push(r.resourceType()));
  assert.equal(await page.locator('#profile').inputValue(),'readable');await closeSettings(page);await page.locator('#generate').click();assert.equal(await page.locator('.component-copy button').count(),4);
@@ -57,7 +57,7 @@ try{
    assert.equal(await page.evaluate(()=>fixtureWrites.length),writeCount);assert.equal(await page.locator('.regenerate').nth(index).evaluate(el=>el===document.activeElement),true);
    await closeSettings(page);await (await page.locator('#copy-all').isVisible()?page.locator('#copy-all'):page.locator('.copy-password').first()).click();assert.equal(await page.evaluate(()=>fixtureWrites.at(-1)),after.join('\n'));
    await page.evaluate(()=>fixtureFailCopy=true);await closeSettings(page);await (await page.locator('#copy-all').isVisible()?page.locator('#copy-all'):page.locator('.copy-password').first()).click();assert.match(await page.locator('#status').textContent(),/Clipboard unavailable/);await page.evaluate(()=>fixtureFailCopy=false);
-   await closeSettings(page);await page.locator('#show').uncheck();assert.ok((await page.locator('.password').allTextContents()).every(v=>v==='••••••••••••••••'));
+   await closeSettings(page);await page.locator('#show').uncheck();assert.ok((await page.locator('.password').allTextContents()).every(v=>v==='\u2022'.repeat(16)));
    await closeSettings(page);await page.locator('#manual').check();await page.evaluate(()=>fixtureFailRandom=true);await page.locator('.regenerate').nth(index).click();assert.match(await page.locator('#status').textContent(),/Existing password preserved/);
    await page.evaluate(()=>fixtureFailRandom=false);await closeSettings(page);await page.locator('#show').check();assert.equal(await page.locator('.password').nth(index).textContent(),after[index]);
   }

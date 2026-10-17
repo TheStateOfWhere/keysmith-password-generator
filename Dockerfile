@@ -19,7 +19,7 @@ FROM nginx:1.30.5-alpine@sha256:0985e772fb9f729e6fa0980da05fca5d9c468e870eed4307
 RUN apk add --no-cache --upgrade \
       libexpat=2.8.5-r0 pcre2=10.49-r0 tiff=4.7.2-r0 \
       libpng=1.6.59-r0 nghttp2-libs=1.70.0-r0 zlib=1.3.2-r1
-LABEL org.opencontainers.image.title="KeySmith" \
+LABEL org.opencontainers.image.title="Zevyrn" \
       org.opencontainers.image.version="1.0.0" \
       org.opencontainers.image.description="Browser-only password generator with local validation and no password storage"
 COPY nginx.conf /etc/nginx/nginx.conf

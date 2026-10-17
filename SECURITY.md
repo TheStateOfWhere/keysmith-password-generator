@@ -13,7 +13,7 @@ version, impact and a minimal nonsecret reproduction.
 
 ## Boundaries
 
-KeySmith generates passwords in the browser using Web Crypto, unbiased sampling
+Zevyrn generates passwords in the browser using Web Crypto, unbiased sampling
 and exact password-space checks. Generation requires an estimated space of at
 least 2^64; this is not a guarantee against every password attack. Passwords and
 policies are not sent to a backend or stored by the application. Only a validated
