@@ -20,7 +20,7 @@ RUN apk add --no-cache --upgrade \
       libexpat=2.8.5-r0 pcre2=10.49-r0 tiff=4.7.2-r0 \
       libpng=1.6.59-r0 nghttp2-libs=1.70.0-r0 zlib=1.3.2-r1
 LABEL org.opencontainers.image.title="Zevyrn" \
-      org.opencontainers.image.version="1.0.0" \
+      org.opencontainers.image.version="1.1.0" \
       org.opencontainers.image.description="Browser-only password generator with local validation and no password storage"
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build --chown=10001:10001 /app/dist /usr/share/nginx/html

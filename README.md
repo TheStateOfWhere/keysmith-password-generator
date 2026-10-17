@@ -2,6 +2,8 @@
 
 **Secure passwords. Easy on the eyes.**
 
+Current application version: **1.1.0**.
+
 Self-hosted password generation in your browser. Zevyrn provides Readable,
 Strong Random and Custom Policy profiles, single-password and batch views,
 copying controls, Large Text and five themes: Zevyrn (default), Midnight, Aurora, Dusk and Slate.
@@ -14,6 +16,8 @@ theme is saved. Clear does not erase OS clipboard history or securely wipe memor
 
 There is currently no official published Zevyrn container image. Build from
 this repository; a locally built image is named `keysmith:1.0.0-local`.
+That retained image name is a compatibility identifier; the application and OCI
+version are **1.1.0**.
 
 Requirements: Linux/amd64 containers, Git, maintained Docker Engine 28 or newer,
 Docker Compose plugin with `--wait`, and Buildx. Docker Desktop must use Linux
@@ -26,7 +30,7 @@ working. Commands below use a POSIX shell; prefix Docker commands with `sudo` if
 your account does not have Docker access.
 
 ```sh
-git clone https://github.com/TheStateOfWhere/keysmith-password-generator.git zevyrn-password-generator
+git clone https://github.com/TheStateOfWhere/zevyrn-password-generator.git zevyrn-password-generator
 cd zevyrn-password-generator
 docker version
 docker compose version
@@ -89,7 +93,9 @@ See [INSTALLATION.md](INSTALLATION.md) for updates and removal.
 ## Screenshots
 
 Captured from the real Zevyrn application. Any visible passwords are public
-examples and must not be used as credentials.
+examples and must not be used as credentials. These retained captures show the
+approved design before the 1.1.0 header-version update; the layout, themes and
+workflows are unchanged.
 
 ### Desktop — Zevyrn theme
 
@@ -120,6 +126,7 @@ the built `/licenses/` assets. Historical project names in `data/NOTICE.md` are
 retained verbatim to preserve pinned dictionary attribution and provenance; the
 current product name is Zevyrn.
 
-The repository URL currently retains the previous product name. See the
-[repository rename dependency](docs/REPOSITORY-RENAME.md). Existing Docker image,
-service, project and `KEYSMITH_*` configuration names are retained for compatibility.
+Project: [TheStateOfWhere/zevyrn-password-generator](https://github.com/TheStateOfWhere/zevyrn-password-generator).
+Canonical URLs are prepared for the coordinated rename described in the
+[repository rename notes](docs/REPOSITORY-RENAME.md). Existing Docker image,
+service, project and `KEYSMITH_*` configuration names remain compatible.

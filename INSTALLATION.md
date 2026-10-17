@@ -1,5 +1,10 @@
 # Docker installation
 
+These instructions target **Zevyrn v1.1.0** from the
+[canonical GitHub repository](https://github.com/TheStateOfWhere/zevyrn-password-generator).
+The canonical URL is prepared for the coordinated repository rename; see
+[rename notes](docs/REPOSITORY-RENAME.md).
+
 Build from source as shown in [README.md](README.md). No public Zevyrn registry
 image is currently provided. The standalone default needs no environment file.
 For remote browser access, choose one HTTPS alternative below.

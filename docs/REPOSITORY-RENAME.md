@@ -1,23 +1,31 @@
-# Repository rename dependency
+# Repository rename coordination
 
-Zevyrn is the current application name. The existing public repository remains
-`TheStateOfWhere/keysmith-password-generator` until a separately authorized rename.
-README clone commands and SECURITY reporting links deliberately use that working
-address. The clone command selects `zevyrn-password-generator` as its local folder.
-
-Pending canonical address (not activated):
+Zevyrn v1.1.0 metadata and active README, installation and security links are
+prepared locally for the canonical repository:
 `https://github.com/TheStateOfWhere/zevyrn-password-generator`
 
-After rename authorization, rename the existing repository, preserve its ID and
-history, update the README clone URL, SECURITY reporting URL and owned local
-remotes, and verify old redirects, new anonymous cloning and documentation links.
-Recheck name availability at that time. Do not reuse the old repository name.
-No README badges or Pages/Actions references currently need a URL change.
+The existing public repository is still
+`TheStateOfWhere/keysmith-password-generator`. The target name currently returns
+404. New canonical links must be activated by the authorized repository rename
+before publishing these prepared documentation changes. The clone command keeps
+`zevyrn-password-generator` as its explicit local folder.
+
+Recheck target-name availability and the remote baseline before execution.
+Rename the existing repository, preserving its ID, owner, default branch and
+history. Update active owned Git remotes, verify the new URL and old redirects,
+and do not reuse the old name. Confirm installed GitHub Apps, external consumers
+and deploy-key retention with the owner; do not change access without approval.
+No README badges, Pages site or Actions workflows currently require migration.
+Relative documentation and screenshot paths remain unchanged.
 
 Keep existing `keysmith` Compose services, project/image identifiers, proxy route
-filenames, `KEYSMITH_*` variables and external TLS paths for compatibility. A
-repository rename does not require changing application hostnames or deployment
-resources. Historical license, dictionary provenance and release notes remain
-historical. Preserve the existing KeySmith v1.0.0 tag/release; this local branding
-implementation does not move or replace it. A future publication/version decision
-requires separate approval.
+filenames, `KEYSMITH_*` variables and external TLS paths for compatibility. The
+retained `keysmith:1.0.0-local` image tag is a local compatibility name; application
+and OCI version metadata is 1.1.0. No Compose file change is needed for this update.
+A repository rename does not require changing application hostnames or deployment
+resources. Historical licenses, dictionary provenance and release notes remain
+historical. Preserve the existing KeySmith v1.0.0 tag/release exactly.
+
+Local version preparation does not create a v1.1.0 tag or release. Commit, push,
+repository rename, tagging, release publication and deployment require separate
+authorization. No public operation is performed during preparation.

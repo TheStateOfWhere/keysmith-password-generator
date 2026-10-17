@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Use the repository's [private reporting page](https://github.com/TheStateOfWhere/keysmith-password-generator/security/advisories/new)
+Use the repository's [private reporting page](https://github.com/TheStateOfWhere/zevyrn-password-generator/security/advisories/new)
 when GitHub's **Report a vulnerability** option is available. Do not put unpatched
 vulnerability details, real passwords, credentials or private keys in public
 issues. If private reporting is unavailable, ask the maintainer for a confidential
