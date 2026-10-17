@@ -1,6 +1,6 @@
 # Docker installation
 
-These instructions target **Zevyrn v1.1.0** from the
+These instructions target **Zevyrn v1.2.0** from the
 [canonical GitHub repository](https://github.com/TheStateOfWhere/zevyrn-password-generator).
 See the [rename notes](docs/REPOSITORY-RENAME.md) for the completed repository
 rename and retained configuration identifiers.
@@ -12,9 +12,9 @@ For remote browser access, choose one HTTPS alternative below.
 ## Choose a hostname and client trust
 
 Replace the sample `keys.example.com` with a name you control, such as
-`keys.your-domain.com`. Set `KEYSMITH_DOMAIN` in `.env` to the bare hostname,
+`keys.your-domain.com`. Set `ZEVYRN_DOMAIN` in `.env` to the bare hostname,
 without a scheme, path or port, and use that same name in DNS and the certificate's
-DNS SAN. `KEYSMITH_BIND_IP` is an address assigned to the Docker host, not the
+DNS SAN. `ZEVYRN_BIND_IP` is an address assigned to the Docker host, not the
 client's address. These examples publish HTTPS on TCP 443 at that address.
 
 - **Public DNS name:** create the record with your domain's DNS provider. A name
@@ -52,7 +52,7 @@ Never disable certificate verification to make an installation test pass.
    `fullchain.pem` contains the PEM leaf followed by intermediate certificates;
    do not append the trusted root. `privkey.pem` contains the matching PEM key.
 3. Keep both files in a protected directory **outside the clone**, for example
-   `/etc/keysmith/tls`. Both example proxies run as UID/GID `65532`. Arrange for
+   `/etc/zevyrn/tls`. Both example proxies run as UID/GID `65532`. Arrange for
    that identity to read the directory and files: a typical Linux setup uses
    owner `root`, group `65532`, directories `0750` and key `0640`. Also permit
    traversal of parent directories. Do not make the key world-readable.
@@ -63,8 +63,8 @@ Never disable certificate verification to make an installation test pass.
    has no login system; choose access appropriate to your installation.
 
 ```sh
-cp .env.example .env
-# Edit .env: KEYSMITH_DOMAIN, KEYSMITH_BIND_IP and KEYSMITH_TLS_DIR.
+cp zevyrn.env.example .env
+# Edit .env: ZEVYRN_DOMAIN, ZEVYRN_BIND_IP and ZEVYRN_TLS_DIR.
 ```
 
 Use a fresh `.env` file, not an existing file belonging to another application.
@@ -73,21 +73,33 @@ the example is loopback; for remote clients select an address on your Docker hos
 The TLS directory must already exist and contain the two files above. Do not use
 an unrelated application's certificate or network without its owner's permission.
 
+### Variable precedence
+
+The new files use a nonempty `ZEVYRN_*` value first, then the corresponding
+`KEYSMITH_*` value for compatibility. Empty values act as unset. If both port
+values are empty or unset, the loopback port defaults to 18080. HTTPS domain,
+bind IP and TLS directory must resolve to nonempty values or `compose config`
+fails. Shell environment variables take precedence over `.env` for the same
+name; a nonempty Zevyrn name still wins over a conflicting legacy name. Remove
+unwanted shell overrides before testing `.env`. This fallback does not rename
+existing projects or services. Validate the resolved configuration before startup.
+
 ## Traefik
 
 ```sh
-docker compose -p keysmith-traefik -f compose.traefik.yaml config
-docker compose -p keysmith-traefik -f compose.traefik.yaml build keysmith
-docker compose -p keysmith-traefik -f compose.traefik.yaml pull --policy always traefik
-docker compose -p keysmith-traefik -f compose.traefik.yaml up -d --no-build --pull never --wait --wait-timeout 120
-docker compose -p keysmith-traefik -f compose.traefik.yaml ps
+docker compose -p zevyrn-traefik -f compose.zevyrn.traefik.yaml config
+docker compose -p zevyrn-traefik -f compose.zevyrn.traefik.yaml build zevyrn
+docker compose -p zevyrn-traefik -f compose.zevyrn.traefik.yaml pull --policy always traefik
+docker compose -p zevyrn-traefik -f compose.zevyrn.traefik.yaml up -d --no-build --pull never --wait --wait-timeout 120
+docker compose -p zevyrn-traefik -f compose.zevyrn.traefik.yaml ps
 curl --fail https://YOUR_HOSTNAME/healthz
 ```
 
-Replace `YOUR_HOSTNAME` with `KEYSMITH_DOMAIN`; expect `ok`. Traefik uses the file
-provider in `examples/traefik`, with a hostname supplied through its environment.
+Replace `YOUR_HOSTNAME` with `ZEVYRN_DOMAIN`; expect `ok`. Traefik uses the file
+provider with only `examples/traefik/zevyrn-dynamic` mounted. The hostname is
+supplied through its environment.
 It reads certificates from a read-only bind mount, listens internally on 8443 and
-receives host TCP 443. Routing is `keysmith:8080` on this project's private bridge.
+receives host TCP 443. Routing is `zevyrn:8080` on this project's private bridge.
 No certificate resolver, labels for discovery or Docker socket is required.
 The dedicated network is a normal bridge: an internal-only Docker network cannot
 provide the published HTTPS listener used here. Backend 8080 remains unpublished.
@@ -97,17 +109,17 @@ provide the published HTTPS listener used here. Backend 8080 remains unpublished
 Use this alternative instead of the Traefik or standalone file:
 
 ```sh
-docker compose -p keysmith-caddy -f compose.caddy.yaml config
-docker compose -p keysmith-caddy -f compose.caddy.yaml build keysmith
-docker compose -p keysmith-caddy -f compose.caddy.yaml pull --policy always caddy
-docker compose -p keysmith-caddy -f compose.caddy.yaml up -d --no-build --pull never --wait --wait-timeout 120
-docker compose -p keysmith-caddy -f compose.caddy.yaml ps
+docker compose -p zevyrn-caddy -f compose.zevyrn.caddy.yaml config
+docker compose -p zevyrn-caddy -f compose.zevyrn.caddy.yaml build zevyrn
+docker compose -p zevyrn-caddy -f compose.zevyrn.caddy.yaml pull --policy always caddy
+docker compose -p zevyrn-caddy -f compose.zevyrn.caddy.yaml up -d --no-build --pull never --wait --wait-timeout 120
+docker compose -p zevyrn-caddy -f compose.zevyrn.caddy.yaml ps
 curl --fail https://YOUR_HOSTNAME/healthz
 ```
 
-`examples/caddy/Caddyfile` uses the same hostname and certificate files. It disables
+`examples/caddy/Caddyfile.zevyrn` uses the same hostname and certificate files. It disables
 the administration API and automatic HTTP redirects, so only TCP 443 is published.
-Its backend is `keysmith:8080`, not localhost. Writable Caddy scratch directories
+Its backend is `zevyrn:8080`, not localhost. Writable Caddy scratch directories
 are bounded tmpfs mounts; no persistent certificate database is needed for these
 manually supplied certificates. Do not replace this with `tls internal` unless
 you deliberately want to manage a different CA and client trust.
@@ -129,7 +141,7 @@ Check Generate, Copy, settings and themes in your browser after setup.
 Use the same project/file options for status and bounded logs:
 
 ```sh
-docker compose -p keysmith-traefik -f compose.traefik.yaml logs --tail 100 keysmith traefik
+docker compose -p zevyrn-traefik -f compose.zevyrn.traefik.yaml logs --tail 100 zevyrn traefik
 ```
 
 For Caddy substitute its project, file and service. Check file permissions for
@@ -157,30 +169,34 @@ Use only the commands for your existing installation, with its original project,
 file and environment settings. A separate build step is required; `up --no-build`
 does not rebuild the application.
 
+The next three examples update Zevyrn-native installations. If your service is
+still named `keysmith`, use [Existing installations](#existing-installations)
+instead; keep your original project name and configuration.
+
 Standalone:
 
 ```sh
-docker compose config
-docker compose build keysmith
-docker compose up -d --no-build --pull never --wait --wait-timeout 120
+docker compose -p zevyrn -f compose.zevyrn.yaml config
+docker compose -p zevyrn -f compose.zevyrn.yaml build zevyrn
+docker compose -p zevyrn -f compose.zevyrn.yaml up -d --no-build --pull never --wait --wait-timeout 120
 ```
 
 Traefik:
 
 ```sh
-docker compose -p keysmith-traefik -f compose.traefik.yaml config
-docker compose -p keysmith-traefik -f compose.traefik.yaml build keysmith
-docker compose -p keysmith-traefik -f compose.traefik.yaml pull --policy always traefik
-docker compose -p keysmith-traefik -f compose.traefik.yaml up -d --no-build --pull never --wait --wait-timeout 120
+docker compose -p zevyrn-traefik -f compose.zevyrn.traefik.yaml config
+docker compose -p zevyrn-traefik -f compose.zevyrn.traefik.yaml build zevyrn
+docker compose -p zevyrn-traefik -f compose.zevyrn.traefik.yaml pull --policy always traefik
+docker compose -p zevyrn-traefik -f compose.zevyrn.traefik.yaml up -d --no-build --pull never --wait --wait-timeout 120
 ```
 
 Caddy:
 
 ```sh
-docker compose -p keysmith-caddy -f compose.caddy.yaml config
-docker compose -p keysmith-caddy -f compose.caddy.yaml build keysmith
-docker compose -p keysmith-caddy -f compose.caddy.yaml pull --policy always caddy
-docker compose -p keysmith-caddy -f compose.caddy.yaml up -d --no-build --pull never --wait --wait-timeout 120
+docker compose -p zevyrn-caddy -f compose.zevyrn.caddy.yaml config
+docker compose -p zevyrn-caddy -f compose.zevyrn.caddy.yaml build zevyrn
+docker compose -p zevyrn-caddy -f compose.zevyrn.caddy.yaml pull --policy always caddy
+docker compose -p zevyrn-caddy -f compose.zevyrn.caddy.yaml up -d --no-build --pull never --wait --wait-timeout 120
 ```
 
 Repeat the health request and browser checks above after updating. For standalone,
@@ -195,6 +211,45 @@ Only a theme identifier is saved. Password generation is unchanged.
 No automatic updater, custom release framework or retained rollback image is
 required by these examples.
 
+## Existing installations
+
+The original `compose.yaml`, `compose.traefik.yaml`, `compose.caddy.yaml`,
+`.env.example`, `examples/traefik/dynamic/keysmith.yaml` and
+`examples/caddy/Caddyfile` remain supported and unchanged. Keep the same project,
+service, `KEYSMITH_*` settings, external certificates and any operator-specific
+proxy configuration. The local image name `keysmith:1.0.0-local` is a retained
+compatibility identifier; rebuilding it from this source produces Zevyrn v1.2.0.
+Do not switch to a Zevyrn project/service as an ordinary update: Compose would
+create a separate installation and may conflict on ports. No migration is required.
+
+After selecting a reviewed release or commit using the Git commands above,
+use only the original command family for your installation:
+
+```sh
+# Legacy standalone (retain any original -p override and port settings):
+docker compose -f compose.yaml config
+docker compose -f compose.yaml build keysmith
+docker compose -f compose.yaml up -d --no-build --pull never --wait --wait-timeout 120
+
+# Legacy Traefik; retain your original project name if different:
+docker compose -p keysmith-traefik -f compose.traefik.yaml config
+docker compose -p keysmith-traefik -f compose.traefik.yaml build keysmith
+docker compose -p keysmith-traefik -f compose.traefik.yaml pull --policy always traefik
+docker compose -p keysmith-traefik -f compose.traefik.yaml up -d --no-build --pull never --wait --wait-timeout 120
+
+# Legacy Caddy; retain your original project name if different:
+docker compose -p keysmith-caddy -f compose.caddy.yaml config
+docker compose -p keysmith-caddy -f compose.caddy.yaml build keysmith
+docker compose -p keysmith-caddy -f compose.caddy.yaml pull --policy always caddy
+docker compose -p keysmith-caddy -f compose.caddy.yaml up -d --no-build --pull never --wait --wait-timeout 120
+```
+
+Use the same original `-p`, `-f` and environment settings for logs, stop/start and
+removal, then verify health and trusted HTTPS. Custom/shared-proxy installations
+must continue using their own reviewed configuration; these examples do not
+replace it. New Traefik routes live outside the legacy watched directory so
+updating this repository does not load duplicate proxy routes.
+
 For certificate renewal, obtain replacement files from your issuer, verify the
 hostname/chain/key match, replace them securely in the external TLS directory,
 and restart only the proxy with your same project/file options. Verify the served
@@ -205,5 +260,5 @@ options. Do not add broad prune, volume-removal or unrelated-project commands.
 The external TLS files are not managed or deleted by Compose.
 
 References: [Docker installation](https://docs.docker.com/engine/install/ubuntu/),
-[Traefik file configuration](https://doc.traefik.io/traefik/reference/dynamic-configuration/file/),
+[Traefik file configuration](https://doc.traefik.io/traefik/reference/routing-configuration/other-providers/file/),
 [Caddy reverse proxy](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy).

@@ -1,0 +1,25 @@
+http:
+  routers:
+    zevyrn:
+      rule: 'Host(`{{ env "ZEVYRN_DOMAIN" }}`)'
+      entryPoints: [websecure]
+      service: zevyrn
+      tls:
+        options: standard
+  services:
+    zevyrn:
+      loadBalancer:
+        servers:
+          - url: "http://zevyrn:8080"
+        healthCheck:
+          path: /healthz
+          interval: 30s
+          timeout: 3s
+tls:
+  certificates:
+    - certFile: /certs/fullchain.pem
+      keyFile: /certs/privkey.pem
+  options:
+    standard:
+      minVersion: VersionTLS12
+      sniStrict: true

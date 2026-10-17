@@ -2,7 +2,7 @@
 
 **Secure passwords. Easy on the eyes.**
 
-Current application version: **1.1.0**.
+Current application version: **1.2.0**.
 
 Self-hosted password generation in your browser. Zevyrn provides Readable,
 Strong Random and Custom Policy profiles, single-password and batch views,
@@ -15,9 +15,8 @@ theme is saved. Clear does not erase OS clipboard history or securely wipe memor
 ## Install from source
 
 There is currently no official published Zevyrn container image. Build from
-this repository; a locally built image is named `keysmith:1.0.0-local`.
-That retained image name is a compatibility identifier; the application and OCI
-version are **1.1.0**.
+this repository; the new-install image is named `zevyrn:1.2.0-local`.
+Existing installations retain their original configuration and image names.
 
 Requirements: Linux/amd64 containers, Git, maintained Docker Engine 28 or newer,
 Docker Compose plugin with `--wait`, and Buildx. Docker Desktop must use Linux
@@ -35,15 +34,15 @@ cd zevyrn-password-generator
 docker version
 docker compose version
 docker buildx version
-docker compose build
-docker compose up -d --no-build --pull never --wait --wait-timeout 120
+docker compose -p zevyrn -f compose.zevyrn.yaml build zevyrn
+docker compose -p zevyrn -f compose.zevyrn.yaml up -d --no-build --pull never --wait --wait-timeout 120
 curl --fail http://127.0.0.1:18080/healthz
 ```
 
 Expect `ok`. Open **http://localhost:18080** on the Docker host. If Docker runs on
 a remote server, localhost refers to that server; use the HTTPS instructions below
 for remote browser access. This loopback-only setup does not publish the app to
-other machines. Change its port with `KEYSMITH_PORT=18081 docker compose ...` and
+other machines. Change its port with `ZEVYRN_PORT=18081 docker compose -p zevyrn -f compose.zevyrn.yaml ...` and
 use the same setting for subsequent commands.
 
 The Dockerfile runs the application tests during the build. Builds intentionally
@@ -53,14 +52,14 @@ fail when pinned inputs are unavailable; do not bypass tests or remove the pins.
 
 See [INSTALLATION.md](INSTALLATION.md) for complete commands using an existing
 certificate. Both examples create their own project network, publish only TCP 443,
-and route to `keysmith:8080`. No Docker socket or external proxy network is needed.
+and route to `zevyrn:8080`. No Docker socket or external proxy network is needed.
 Use one complete Compose file at a time; do not combine the alternatives.
 
 | Option | Compose file | Browser address |
 | --- | --- | --- |
-| Local only | `compose.yaml` | `http://localhost:18080` |
-| Traefik + existing certificate | `compose.traefik.yaml` | `https://<your-domain>` |
-| Caddy + existing certificate | `compose.caddy.yaml` | `https://<your-domain>` |
+| Local only | `compose.zevyrn.yaml` | `http://localhost:18080` |
+| Traefik + existing certificate | `compose.zevyrn.traefik.yaml` | `https://<your-domain>` |
+| Caddy + existing certificate | `compose.zevyrn.caddy.yaml` | `https://<your-domain>` |
 
 Provide a DNS record pointing to your Docker host, a certificate whose DNS SAN
 matches that name, and client trust in the issuing CA. Private hostnames need a
@@ -68,7 +67,7 @@ trusted private-CA certificate. The examples do not issue certificates or create
 a CA. Keep private keys outside this repository. Port 80 is not required by these
 existing-certificate examples. HTTPS or localhost is required for browser copying.
 
-Choose a hostname you control and set `KEYSMITH_DOMAIN` to that bare name, without
+Choose a hostname you control and set `ZEVYRN_DOMAIN` to that bare name, without
 `https://` or a port. Public DNS and internal DNS are both supported; clients must
 use a resolver that knows the record. A public DNS name does not require public
 Internet access to the application. See [DNS and certificate trust](INSTALLATION.md#choose-a-hostname-and-client-trust)
@@ -77,18 +76,26 @@ and the [update commands](INSTALLATION.md#updates).
 ## Troubleshooting
 
 ```sh
-docker compose ps
-docker compose logs --tail 100 keysmith
+docker compose -p zevyrn -f compose.zevyrn.yaml ps
+docker compose -p zevyrn -f compose.zevyrn.yaml logs --tail 100 zevyrn
 curl --fail http://127.0.0.1:18080/healthz
 ```
 
 For HTTPS, use the same `-p` and `-f` options as your installation when checking
 status or logs. A 502 usually means the app is unhealthy or the proxy cannot reach
-`keysmith:8080`. A certificate warning means the hostname, chain, expiry or client
+`zevyrn:8080`. A certificate warning means the hostname, chain, expiry or client
 trust needs attention; do not treat `curl -k` as a successful HTTPS test.
 If a port is occupied, choose another port or host address; do not stop another
 application. A missing local image requires the explicit build step above.
 See [INSTALLATION.md](INSTALLATION.md) for updates and removal.
+
+## Existing installations
+
+Keep your original Compose file, project, service, environment variables and TLS
+paths. The legacy `compose.yaml`, `compose.traefik.yaml`, `compose.caddy.yaml`,
+`.env.example` and proxy configurations remain unchanged. Do not switch projects
+or services just to update. Follow the [existing-installation update path](INSTALLATION.md#existing-installations).
+The new Zevyrn files are complete alternatives, not overlays on legacy files.
 
 ## Screenshots
 

@@ -148,12 +148,12 @@ try {
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'Maximum suffix length fits 320px viewport');
   await closeSettings(page);await page.locator('#manual').check();
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'Large-text maximum suffix fits narrow viewport');
-  // 0.7 UI: real rendered columns, exact text and maximum batch size.
-  await closeSettings(page);await page.locator('#theme').selectOption('light');
+  // Current Zevyrn UI: real rendered columns, exact text and maximum batch size.
+  await closeSettings(page);await page.locator('#theme').selectOption('zevyrn');
   await closeSettings(page);await page.locator('#manual').uncheck();
   await openSettings(page);await summary.click(); await openSettings(page);await page.locator('#suffix').fill('6'); await openSettings(page);await summary.click();
   await closeSettings(page);await page.locator('#count').selectOption('1'); await closeSettings(page);await page.locator('#generate').click();
-  assert.equal(await page.locator('h1').textContent(), 'Strong passwords. Made simple.');
+  assert.equal(await page.locator('h1').textContent(), 'Secure passwords. Easy on the eyes.');
   for (const width of [1280,768,390,320]) {
     await page.setViewportSize({width,height:1000});await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));await closeSettings(page);
     await page.evaluate(() => scrollTo(0,0));
@@ -164,7 +164,7 @@ try {
     assert.notEqual(await page.locator('#profile').evaluate(e=>getComputedStyle(e).outlineStyle),'none');
     assert.equal(await page.getByRole('combobox',{name:'Password profile',exact:true}).count(),1);
     await page.evaluate(() => scrollTo(0,0));
-    await page.screenshot({path:screenshotPath('ui-light-'+width+'.png'),fullPage:true});
+    await page.screenshot({path:screenshotPath('ui-zevyrn-'+width+'.png'),fullPage:true});
   }
   await closeSettings(page);await page.locator('#count').selectOption('20');
   await openSettings(page);await summary.click(); await openSettings(page);await page.locator('#suffix').fill('64'); await openSettings(page);await summary.click();

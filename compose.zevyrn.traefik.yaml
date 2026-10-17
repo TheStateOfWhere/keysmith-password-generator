@@ -1,0 +1,76 @@
+# Complete alternative: use alone, never as an overlay.
+name: zevyrn-traefik
+services:
+  zevyrn:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: zevyrn:1.2.0-local
+    pull_policy: never
+    restart: unless-stopped
+    user: "10001:10001"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m,mode=1777
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    cpus: 1.0
+    pids_limit: 128
+    networks: [app]
+    labels:
+      traefik.enable: "false"
+      com.centurylinklabs.watchtower.enable: "false"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+  traefik:
+    image: traefik:v3.7.15@sha256:0f6150202bc1fed72a7bd2107460eaa510e5b8a905f3fdb5b84f2c8619c33368
+    platform: linux/amd64
+    pull_policy: never
+    restart: unless-stopped
+    user: "65532:65532"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 256m
+    cpus: 0.5
+    pids_limit: 128
+    environment:
+      ZEVYRN_DOMAIN: "${ZEVYRN_DOMAIN:-${KEYSMITH_DOMAIN:?Set ZEVYRN_DOMAIN or KEYSMITH_DOMAIN in .env}}"
+    ports:
+      - "${ZEVYRN_BIND_IP:-${KEYSMITH_BIND_IP:?Set ZEVYRN_BIND_IP or KEYSMITH_BIND_IP in .env}}:443:8443/tcp"
+    networks: [app]
+    depends_on:
+      zevyrn:
+        condition: service_healthy
+    labels:
+      traefik.enable: "false"
+      com.centurylinklabs.watchtower.enable: "false"
+    command: ["--configFile=/etc/traefik/traefik.yaml"]
+    volumes:
+      - type: bind
+        source: ./examples/traefik/traefik.yaml
+        target: /etc/traefik/traefik.yaml
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./examples/traefik/zevyrn-dynamic
+        target: /etc/traefik/dynamic
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: "${ZEVYRN_TLS_DIR:-${KEYSMITH_TLS_DIR:?Set an absolute external ZEVYRN_TLS_DIR or KEYSMITH_TLS_DIR}}"
+        target: /certs
+        read_only: true
+        bind:
+          create_host_path: false
+networks:
+  app:
+    driver: bridge

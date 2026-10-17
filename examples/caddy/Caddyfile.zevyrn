@@ -1,0 +1,13 @@
+{
+    admin off
+    persist_config off
+    auto_https disable_redirects
+    https_port 8443
+}
+
+{$ZEVYRN_DOMAIN} {
+    tls /certs/fullchain.pem /certs/privkey.pem
+    reverse_proxy zevyrn:8080 {
+        health_uri /healthz
+    }
+}

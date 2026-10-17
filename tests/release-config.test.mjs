@@ -1,6 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir, mkdtemp, writeFile, rm } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { screenshotDirectory } from './browser-artifacts.mjs';
 const read = name => readFile(new URL('../'+name, import.meta.url), 'utf8');
 
@@ -67,11 +73,193 @@ test('release metadata agrees and historical dictionary provenance stays unchang
   assert.equal(pkg.name,'zevyrn');
   assert.equal(lock.name,pkg.name);
   assert.equal(lock.packages[''].name,pkg.name);
-  assert.equal(pkg.version,'1.1.0');
+  assert.equal(pkg.version,'1.2.0');
   assert.equal(lock.version,pkg.version);
   assert.equal(lock.packages[''].version,pkg.version);
   assert.match(await read('Dockerfile'),/org.opencontainers.image.title="Zevyrn"/);
-  assert.match(await read('Dockerfile'),/org.opencontainers.image.version="1.1.0"/);
-  assert.match(await read('public/index.html'),/class="version">v1.1.0/);
+  assert.match(await read('Dockerfile'),/org.opencontainers.image.version="1.2.0"/);
+  assert.match(await read('public/index.html'),/class="version">v1.2.0/);
   assert.equal(JSON.parse(await read('data/readability-overrides.json')).version,'0.4.0');
+});
+
+// Fixed v1.1.0 compatibility contracts. Normalize line endings only for portable
+// checkout verification; configuration values and every other byte are pinned.
+test('all legacy installation and proxy entry points retain their v1.1.0 contents', async () => {
+  const expected = {
+  "compose.caddy.yaml": "86de62d004bab84fbb5f91a4ef2373caca26936e6076ae370989593520f57eef",
+  "compose.traefik.yaml": "5ffba9f3873413e35b2df5a59efbf30b245c69ae0792694066468dbaf15a6138",
+  "compose.yaml": "dd7a6426ff1c813df7ff9349e5ad1eb78c28d3c8cd336c75c3919478c4f218f5",
+  "examples/caddy/Caddyfile": "d67d24f69fbd5872b973091ed52fa481460fdbc3813b0a302eaabec0fa295449",
+  "examples/traefik/dynamic/keysmith.yaml": "d91e871d1e86b89dbee87a93265b6776cd84db14027d11117802a268321a645a",
+  "examples/traefik/traefik.yaml": "f6af2655317abc56d3abf02eb612443d7a57e9923694defc6da20cf944b89f19"
+};
+  for (const [path,hash] of Object.entries(expected)) {
+    assert.equal(createHash('sha256').update((await read(path)).replace(/\r\n/g,'\n')).digest('hex'),hash,path);
+  }
+});
+
+function legacyEquivalent(config) {
+  return config
+    .replaceAll('zevyrn:1.2.0-local','keysmith:1.0.0-local')
+    .replaceAll('${ZEVYRN_PORT:-${KEYSMITH_PORT:-18080}}','${KEYSMITH_PORT:-18080}')
+    .replaceAll('${ZEVYRN_DOMAIN:-${KEYSMITH_DOMAIN:?Set ZEVYRN_DOMAIN or KEYSMITH_DOMAIN in .env}}','${KEYSMITH_DOMAIN:?Set KEYSMITH_DOMAIN in .env}')
+    .replaceAll('${ZEVYRN_BIND_IP:-${KEYSMITH_BIND_IP:?Set ZEVYRN_BIND_IP or KEYSMITH_BIND_IP in .env}}','${KEYSMITH_BIND_IP:?Set KEYSMITH_BIND_IP in .env}')
+    .replaceAll('${ZEVYRN_TLS_DIR:-${KEYSMITH_TLS_DIR:?Set an absolute external ZEVYRN_TLS_DIR or KEYSMITH_TLS_DIR}}','${KEYSMITH_TLS_DIR:?Set an absolute external TLS directory}')
+    .replaceAll('      ZEVYRN_DOMAIN:','      KEYSMITH_DOMAIN:')
+    .replaceAll('./examples/traefik/zevyrn-dynamic','./examples/traefik/dynamic')
+    .replaceAll('./examples/caddy/Caddyfile.zevyrn','./examples/caddy/Caddyfile')
+    .replaceAll('zevyrn','keysmith');
+}
+
+test('native configurations preserve the complete legacy security and networking contract', async () => {
+  for (const suffix of ['','.traefik','.caddy']) {
+    const native=await read('compose.zevyrn'+suffix+'.yaml');
+    assert.equal(legacyEquivalent(native),await read('compose'+suffix+'.yaml'));
+    assert.match(native,/^  zevyrn:$/m);
+    assert.match(native,/image: zevyrn:1\.2\.0-local/);
+    assert.match(native,new RegExp('^name: zevyrn'+suffix.replace('.','-')+'$','m'));
+    const app=native.split(/\n  (?:traefik|caddy):/)[0];
+    assert.doesNotMatch(app,/cap_add:/);
+    if(suffix) assert.doesNotMatch(app,/^\s+ports:/m);
+    else assert.match(app,/127\.0\.0\.1:\$\{ZEVYRN_PORT:-\$\{KEYSMITH_PORT:-18080\}\}:8080/);
+  }
+});
+
+test('native proxy routes, TLS, and independent watched directory are consistent', async () => {
+  const dynamic=await read('examples/traefik/zevyrn-dynamic/zevyrn.yaml');
+  assert.equal(dynamic.replaceAll('zevyrn','keysmith').replaceAll('ZEVYRN_DOMAIN','KEYSMITH_DOMAIN'),await read('examples/traefik/dynamic/keysmith.yaml'));
+  const caddy=await read('examples/caddy/Caddyfile.zevyrn');
+  assert.equal(caddy.replaceAll('zevyrn','keysmith').replaceAll('ZEVYRN_DOMAIN','KEYSMITH_DOMAIN'),await read('examples/caddy/Caddyfile'));
+  assert.deepEqual(await readdir(new URL('../examples/traefik/dynamic',import.meta.url)),['keysmith.yaml']);
+  assert.deepEqual(await readdir(new URL('../examples/traefik/zevyrn-dynamic',import.meta.url)),['zevyrn.yaml']);
+  const compose=await read('compose.zevyrn.traefik.yaml');
+  assert.match(compose,/source: \.\/examples\/traefik\/zevyrn-dynamic\n/);
+  assert.doesNotMatch(compose,/source: \.\/examples\/traefik\/dynamic\n/);
+  assert.match(await read('compose.zevyrn.caddy.yaml'),/source: \.\/examples\/caddy\/Caddyfile\.zevyrn\n/);
+});
+
+// Execute only the trusted expressions extracted from these source files.
+// POSIX shell parameter expansion is an operator-contract check, not a
+// substitute for Docker Compose's YAML loading or .env-file precedence.
+const shell=process.platform==='win32'
+  ? 'C:/Program Files/Git/bin/bash.exe' : '/bin/sh';
+for (const suffix of ['PORT','DOMAIN','BIND_IP','TLS_DIR']) {
+  test('native '+suffix+' fallback handles unset, empty and conflicting values', {skip:!existsSync(shell)&&'POSIX shell unavailable'}, async () => {
+    const name=suffix==='PORT'?'compose.zevyrn.yaml':'compose.zevyrn.traefik.yaml';
+    const config=await read(name);
+    const expression=config.match(new RegExp('\\$\\{ZEVYRN_'+suffix+':-\\$\\{KEYSMITH_'+suffix+':[?\\-][^}]+\\}\\}'))?.[0];
+    assert.ok(expression,name+': '+suffix);
+    if(suffix!=='PORT') assert.ok((await read('compose.zevyrn.caddy.yaml')).includes(expression));
+    const native='ZEVYRN_'+suffix,legacy='KEYSMITH_'+suffix;
+    const cases=[
+      [{},suffix==='PORT'?'18080':null],
+      [{[native]:'',[legacy]:''},suffix==='PORT'?'18080':null],
+      [{[native]:'new-value'},'new-value'],
+      [{[legacy]:'old-value'},'old-value'],
+      [{[native]:'',[legacy]:'old-value'},'old-value'],
+      [{[native]:'new-value',[legacy]:''},'new-value'],
+      [{[native]:'new-value',[legacy]:'old-value'},'new-value'],
+      [{[native]:''},suffix==='PORT'?'18080':null],
+      [{[legacy]:''},suffix==='PORT'?'18080':null],
+    ];
+    for(const [values,expected] of cases) {
+      const env=Object.fromEntries(Object.entries(process.env).filter(([k])=>!/^ZEVYRN_|^KEYSMITH_/.test(k)));
+      const result=spawnSync(shell,['-c',`printf '%s' "${expression}"`],{env:{...env,...values},encoding:'utf8'});
+      assert.ifError(result.error);
+      if(expected===null) {
+        assert.notEqual(result.status,0,JSON.stringify(values));
+        assert.match(result.stderr,new RegExp('KEYSMITH_'+suffix));
+      } else {
+        assert.equal(result.status,0,result.stderr);
+        assert.equal(result.stdout,expected,JSON.stringify(values));
+      }
+    }
+  });
+}
+
+test('native example uses canonical settings and Docker build includes regression inputs', async () => {
+  const example=await read('zevyrn.env.example');
+  assert.deepEqual(example.split('\n').filter(l=>l&&!l.startsWith('#')).map(l=>l.split('=')[0]),['ZEVYRN_PORT','ZEVYRN_DOMAIN','ZEVYRN_BIND_IP','ZEVYRN_TLS_DIR']);
+  assert.match(example,/ZEVYRN_BIND_IP=127\.0\.0\.1/);
+  assert.match(example,/ZEVYRN_TLS_DIR=\/etc\/zevyrn\/tls/);
+  assert.match(await read('Dockerfile'),/COPY compose\.zevyrn\.yaml compose\.zevyrn\.traefik\.yaml compose\.zevyrn\.caddy\.yaml zevyrn\.env\.example \.\//);
+});
+
+// No daemon, containers, networks or ports are used: this calls only the real
+// Compose configuration loader. Optional because the source build has no Docker.
+const composeAvailable=spawnSync('docker',['compose','version','--short'],{encoding:'utf8'}).status===0;
+test('Compose CLI renders both families and enforces .env/shell precedence and required settings',
+  {skip:!composeAvailable&&'Docker Compose CLI unavailable; operator checks above are not Compose rendering'}, async () => {
+  const root=fileURLToPath(new URL('../',import.meta.url));
+  const temporary=await mkdtemp(join(tmpdir(),'zevyrn-config-'));
+  const envFile=join(temporary,'settings.env');
+  const tls=temporary.replaceAll('\\','/');
+  const cleanEnv=Object.fromEntries(Object.entries(process.env).filter(([key])=>! /^(?:ZEVYRN_|KEYSMITH_|COMPOSE_)/.test(key)));
+  async function render(file,settings={},shellValues={}) {
+    await writeFile(envFile,Object.entries(settings).map(([k,v])=>`${k}=${v}`).join('\n')+'\n');
+    return spawnSync('docker',['compose','--project-directory',root,'--env-file',envFile,'-p','zevyrn-config-test','-f',join(root,file),'config','--format','json'],
+      {env:{...cleanEnv,...shellValues},encoding:'utf8'});
+  }
+  try {
+    for(const family of ['legacy','native']) {
+      const service=family==='legacy'?'keysmith':'zevyrn';
+      const prefix=family==='legacy'?'KEYSMITH':'ZEVYRN';
+      const settings={};
+      for(const [key,value] of Object.entries({PORT:'18081',DOMAIN:'keys.example.com',BIND_IP:'127.0.0.1',TLS_DIR:tls})) settings[prefix+'_'+key]=value;
+      for(const suffix of ['','.traefik','.caddy']) {
+        const file='compose'+(family==='native'?'.zevyrn':'')+suffix+'.yaml';
+        const result=await render(file,settings);
+        assert.ifError(result.error); assert.equal(result.status,0,result.stderr);
+        const config=JSON.parse(result.stdout),app=config.services[service];
+        assert.equal(app.image,family==='native'?'zevyrn:1.2.0-local':'keysmith:1.0.0-local');
+        assert.equal(app.user,'10001:10001'); assert.equal(app.read_only,true);
+        assert.deepEqual(app.cap_drop,['ALL']); assert.ok(app.security_opt.includes('no-new-privileges:true'));
+        if(suffix) {
+          assert.ok(!app.ports?.length);
+          const proxy=config.services[suffix.slice(1)];
+          assert.equal(proxy.ports.length,1); assert.equal(proxy.ports[0].target,8443);
+          assert.equal(String(proxy.ports[0].published),'443'); assert.equal(proxy.ports[0].host_ip,'127.0.0.1');
+          assert.equal(proxy.environment[prefix+'_DOMAIN'],'keys.example.com');
+        } else {
+          assert.equal(app.ports.length,1); assert.equal(app.ports[0].target,8080);
+          assert.equal(String(app.ports[0].published),'18081'); assert.equal(app.ports[0].host_ip,'127.0.0.1');
+        }
+      }
+    }
+    const cases=[
+      [{}, {},null],
+      [{ZEVYRN_DOMAIN:'',KEYSMITH_DOMAIN:''},{},null],
+      [{KEYSMITH_DOMAIN:'legacy.example.com'}, {},'legacy.example.com'],
+      [{ZEVYRN_DOMAIN:'',KEYSMITH_DOMAIN:'legacy.example.com'}, {},'legacy.example.com'],
+      [{ZEVYRN_DOMAIN:'new.example.com',KEYSMITH_DOMAIN:'legacy.example.com'}, {},'new.example.com'],
+      [{ZEVYRN_DOMAIN:'new.example.com'}, {ZEVYRN_DOMAIN:'shell.example.com'},'shell.example.com'],
+      [{ZEVYRN_DOMAIN:'new.example.com'}, {KEYSMITH_DOMAIN:'legacy-shell.example.com'},'new.example.com'],
+      [{ZEVYRN_DOMAIN:'new.example.com',KEYSMITH_DOMAIN:'legacy.example.com'}, {ZEVYRN_DOMAIN:''},'legacy.example.com'],
+    ];
+    for(const suffix of ['traefik','caddy']) {
+      const file='compose.zevyrn.'+suffix+'.yaml';
+      for(const [settings,shellValues,expected] of cases) {
+        const result=await render(file,{ZEVYRN_BIND_IP:'127.0.0.1',ZEVYRN_TLS_DIR:tls,...settings},shellValues);
+        if(expected===null) assert.notEqual(result.status,0,'Missing domain must fail');
+        else { assert.equal(result.status,0,result.stderr); assert.equal(JSON.parse(result.stdout).services[suffix].environment.ZEVYRN_DOMAIN,expected); }
+      }
+      for(const missing of ['BIND_IP','TLS_DIR']) {
+        for(const value of [undefined,'']) {
+          const settings={ZEVYRN_DOMAIN:'keys.example.com',ZEVYRN_BIND_IP:'127.0.0.1',ZEVYRN_TLS_DIR:tls};
+          delete settings['ZEVYRN_'+missing];
+          if(value!==undefined) settings['ZEVYRN_'+missing]=settings['KEYSMITH_'+missing]=value;
+          assert.notEqual((await render(file,settings)).status,0,missing+' required');
+        }
+      }
+    }
+    for(const [settings,shellValues,expected] of [[{}, {},'18080'],[{ZEVYRN_PORT:'',KEYSMITH_PORT:''},{},'18080'],[{KEYSMITH_PORT:'18082'},{},'18082'],[{ZEVYRN_PORT:'18083',KEYSMITH_PORT:'18082'},{},'18083'],[{ZEVYRN_PORT:'18083'},{ZEVYRN_PORT:'18084'},'18084']]) {
+      const result=await render('compose.zevyrn.yaml',settings,shellValues);
+      assert.equal(result.status,0,result.stderr); assert.equal(String(JSON.parse(result.stdout).services.zevyrn.ports[0].published),expected);
+    }
+  } finally {
+    // Only the exact directory allocated by mkdtemp can be removed.
+    assert.equal(resolve(temporary),join(resolve(tmpdir()),temporary.split(/[\\/]/).at(-1)));
+    assert.ok(temporary.split(/[\\/]/).at(-1).startsWith('zevyrn-config-'));
+    await rm(temporary,{recursive:true,force:true});
+  }
 });
