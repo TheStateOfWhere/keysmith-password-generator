@@ -1,4 +1,4 @@
-# Zevyrn 1.2.0 — unreleased
+# Zevyrn 1.2.0 — 2026-10-17
 
 Additive Zevyrn-native standalone, Traefik and Caddy installation examples use
 the `zevyrn` service, `zevyrn:1.2.0-local` image and `ZEVYRN_*` settings. Legacy
