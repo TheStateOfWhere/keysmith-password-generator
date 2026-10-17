@@ -62,6 +62,12 @@ trusted private-CA certificate. The examples do not issue certificates or create
 a CA. Keep private keys outside this repository. Port 80 is not required by these
 existing-certificate examples. HTTPS or localhost is required for browser copying.
 
+Choose a hostname you control and set `KEYSMITH_DOMAIN` to that bare name, without
+`https://` or a port. Public DNS and internal DNS are both supported; clients must
+use a resolver that knows the record. A public DNS name does not require public
+Internet access to the application. See [DNS and certificate trust](INSTALLATION.md#choose-a-hostname-and-client-trust)
+and the [update commands](INSTALLATION.md#updates).
+
 ## Troubleshooting
 
 ```sh
